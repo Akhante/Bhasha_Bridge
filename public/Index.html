@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>BhashaBridge · ഭാഷാ ബ്രിഡ്ജ്</title>
+    <meta name="theme-color" content="#0f4c4a" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-lang="ml">
+    <header id="top">
+      <div class="brand">
+        <img src="icon.svg" alt="" width="30" height="30" /><b>BhashaBridge</b>
+      </div>
+      <div class="tools">
+        <span id="net" class="net" hidden></span>
+        <div class="seg" role="group" aria-label="Language">
+          <button data-lang="ml">മല</button
+          ><button data-lang="both">മല+EN</button
+          ><button data-lang="en">EN</button>
+        </div>
+        <button id="gear" class="ico" aria-label="Settings">⚙</button>
+      </div>
+    </header>
+    <main>
+      <section id="s-kids" class="screen" hidden></section>
+      <section id="s-create" class="screen" hidden></section>
+      <section id="s-pin" class="screen" hidden></section>
+      <section id="s-home" class="screen" hidden></section>
+      <section id="s-gate" class="screen" hidden></section>
+      <section id="s-end" class="screen" hidden></section>
+      <section id="s-error" class="screen" hidden></section>
+      <p id="boot" class="boot">…</p>
+    </main>
+    <div id="modal" class="modal" hidden></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="store.js"></script>
+    <script src="rules.js"></script>
+    <script src="voice.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

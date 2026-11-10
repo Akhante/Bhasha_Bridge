@@ -1,0 +1,20 @@
+{
+  "name": "BhashaBridge",
+  "short_name": "BhashaBridge",
+  "description": "Voice-first Malayalam-English science tutor",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "ml",
+  "background_color": "#f2f7f3",
+  "theme_color": "#0f4c4a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
