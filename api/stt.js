@@ -17,7 +17,7 @@ module.exports = async function handler(req, res) {
       body: form
     });
     const data = await r.json();
-    res.status(200).json({ transcript: data.transcript || '', raw: data });
+    res.status(200).json({ transcript: data.transcript || '' });
   } catch (e) {
     res.status(200).json({ transcript: '', error: String(e) });
   }
