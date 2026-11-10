@@ -233,64 +233,23 @@
         new URLSearchParams(location.search).get("child") || "S01";
       let currentConcept = "evap_rate";
 
-      const CONCEPTS = [
-        {
-          id: "evap_rate",
-          name: { ml: "വേഗം ഉണങ്ങുന്നത്", en: "What dries faster?" },
-        },
-        {
-          id: "evap_state",
-          name: { ml: "വെള്ളം എവിടെ പോകുന്നു?", en: "Where does water go?" },
-        },
-        {
-          id: "evap_cooling",
-          name: { ml: "ബാഷ്പീകരണവും തണുപ്പും", en: "Evaporation & Cooling" },
-        },
-      ];
-
-      const STRANDS = [
-        { gate: "understand", name: "1. Understand (Mental Model)" },
-        { gate: "express", name: "2. Express (Academic English)" },
-        { gate: "apply", name: "3. Apply (New Situation)" },
-      ];
-
-      function labelClass(label) {
-        if (label === "strong") return "strong";
-        if (label === "developing") return "developing";
-        if (label === "needs support") return "support";
-        return "none";
-      }
-
-      function renderTabs() {
-        const container = document.getElementById("conceptTabs");
-        container.innerHTML = CONCEPTS.map(
-          (c) => `
-          <button class="tab ${c.id === currentConcept ? "active" : ""}" onclick="switchConcept('${c.id}')">
-            ${c.name.en}
-          </button>
-        `,
-        ).join("");
-      }
-
-      window.switchConcept = function (id) {
-        currentConcept = id;
-        renderTabs();
-        renderPassport();
-      };
-
       function renderPassport() {
+        // Safe fallbacks to prevent runtime crashes
         const evidence =
           typeof loadEvidence === "function" ? loadEvidence(CHILD_ID) : [];
 
-        // FIXED LINE 126: Added missing closing quote after "sub
-        document.getElementById("sub").textContent =
-          `Child ID: ${CHILD_ID} · Class 7 Science (SCERT Kerala)`;
+        // Fixed string interpolation syntax
+        const subEl = document.getElementById("sub");
+        if (subEl) {
+          subEl.textContent = `Child ID: ${CHILD_ID} · Class 7 Science (SCERT Kerala)`;
+        }
 
         const container = document.getElementById("strands");
+        if (!container) return;
         container.innerHTML = "";
 
         STRANDS.forEach((s) => {
-          // FIXED LINE 129: Added safe fallback if rules.js is missing
+          // Safe fallback if gateState is missing
           const state =
             typeof gateState === "function"
               ? gateState(evidence, currentConcept, s.gate)
@@ -298,7 +257,6 @@
 
           const cls = labelClass(state.label);
           const pct = Math.round(state.estimate * 100);
-
           const gateEvidence = evidence.filter(
             (e) => e.concept === currentConcept && e.gate === s.gate,
           );
@@ -306,54 +264,44 @@
           const card = document.createElement("div");
           card.className = "strand";
           card.innerHTML = `
-            <div class="row">
-              <span class="name">${s.name}</span>
-              <span class="label ${cls}">${state.label}</span>
-            </div>
-            <div class="bar"><div class="fill ${cls}" style="width: ${pct}%"></div></div>
-            <div class="meta">
-              <span>${state.n} evidence items (Beta est: ${pct}%)</span>
-              <span>${gateEvidence.filter((e) => e.confidence === "low").length} offline / low-conf</span>
-            </div>
-            ${
-              gateEvidence.length > 0
-                ? `
-              <button class="evidence-toggle" onclick="toggleLog(this)">View Evidence Log (${gateEvidence.length})</button>
-              <div class="evidence-log">
-                ${gateEvidence
-                  .map(
-                    (e) => `
-                  <div class="ev-item">
-                    <span>Result: <b>${e.result}</b> (${e.source})</span>
-                    <span>${e.misconception ? "Misconception: " + e.misconception : "Correct"}</span>
-                  </div>
-                `,
-                  )
-                  .join("")}
+        <div class="row">
+          <span class="name">${s.name}</span>
+          <span class="label ${cls}">${state.label}</span>
+        </div>
+        <div class="bar"><div class="fill ${cls}" style="width: ${pct}%"></div></div>
+        <div class="meta">
+          <span>${state.n} evidence items (Beta est: ${pct}%)</span>
+          <span>${gateEvidence.filter((e) => e.confidence === "low").length} offline / low-conf</span>
+        </div>
+        ${
+          gateEvidence.length > 0
+            ? `
+          <button class="evidence-toggle" onclick="toggleLog(this)">View Evidence Log (${gateEvidence.length})</button>
+          <div class="evidence-log">
+            ${gateEvidence
+              .map(
+                (e) => `
+              <div class="ev-item">
+                <span>Result: <b>${e.result}</b> (${e.source})</span>
+                <span>${e.misconception ? "Misconception: " + e.misconception : "Correct"}</span>
               </div>
-            `
-                : ""
-            }
-          `;
+            `,
+              )
+              .join("")}
+          </div>
+        `
+            : ""
+        }
+      `;
           container.appendChild(card);
         });
 
         if (typeof nextActivity === "function") {
           const next = nextActivity(evidence, currentConcept);
-          document.getElementById("nextText").textContent = next.text;
+          const nextTextEl = document.getElementById("nextText");
+          if (nextTextEl) nextTextEl.textContent = next.text;
         }
       }
-
-      window.toggleLog = function (btn) {
-        const log = btn.nextElementSibling;
-        log.classList.toggle("open");
-        btn.textContent = log.classList.contains("open")
-          ? "Hide Evidence Log"
-          : `View Evidence Log`;
-      };
-
-      renderTabs();
-      renderPassport();
     </script>
   </body>
 </html>
