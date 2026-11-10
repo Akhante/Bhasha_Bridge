@@ -1,0 +1,61 @@
+id	concept	source	answer	teacher_label
+S01	evap_state	real	വെള്ളം കുറച്ചു ദിവസം കഴിയുമ്പോൾ വായുവിൽ പോയി കാണും	correct
+S02	evap_state	real	വെള്ളം ഗ്ലാസിൽ നിന്ന് മാഞ്ഞുപോയി	water_disappears
+S03	evap_state	real	തറയിലെ വെള്ളം മണ്ണ് വലിച്ചെടുത്തു	soaks_in
+S04	evap_state	real	വെള്ളം ബാഷ്പമായി വായുവിൽ കലർന്നു	correct
+S05	evap_state	test	വെള്ളം മൊത്തം തീർന്നുപോയി	water_disappears
+S06	evap_state	test	ഗ്ലാസിൽ വെച്ച വെള്ളം എങ്ങോട്ടോ പോയി മറഞ്ഞു	water_disappears
+S07	evap_state	real	തറ നനഞ്ഞപ്പോൾ വെള്ളം അതിനുള്ളിൽ കയറി ഒളിച്ചു	soaks_in
+S08	evap_state	test	അത് ആവിയായി അന്തരീക്ഷത്തിലേക്ക് പോയി	correct
+S09	evap_state	real	വെള്ളം വായുവിൽ അലിഞ്ഞുചേർന്നു	correct
+S10	evap_state	test	വെള്ളം എങ്ങോട്ടും പോയില്ല, അത് അപ്രത്യക്ഷമായി	water_disappears
+S11	evap_rate	real	വിരിച്ച തുണിയല്ലേ, അപ്പോൾ വേഗം ഉണങ്ങും	correct
+S12	evap_rate	real	രണ്ടിനും ഒരേ അളവ് വെള്ളമല്ലേ, പിന്നെങ്ങനെ വ്യത്യാസം വരും?	amount_decides
+S13	evap_rate	real	വെയിലില്ലെങ്കിൽ തുണി ഒരിക്കലും ഉണങ്ങില്ല	only_hot
+S14	evap_rate	real	കാറ്റ് കാരണം വെള്ളം വേഗം വായുവിൽ പോകും	correct
+S15	evap_rate	test	അളവ് തുല്യമായതുകൊണ്ട് രണ്ടും ഒരേ സമയത്ത് ഉണങ്ങും	amount_decides
+S16	evap_rate	real	തണലിൽ വെച്ചാൽ തുണി ഉണങ്ങാൻ പാടില്ല	only_hot
+S17	evap_rate	test	കാറ്റ് കൊണ്ട് യാതൊരു പ്രയോജനവുമില്ല, ചൂട് വേണം	wind_no_effect
+S18	evap_rate	real	തുണി വിരിക്കുമ്പോൾ കൂടുതൽ കാറ്റും വെയിലും തടდება	correct
+S19	evap_rate	test	കുരുമുളക് കൂനയായി ഇട്ടാലും പരത്തി ഇട്ടാലും ഒരേ വേഗതയാണ്	amount_decides
+S20	evap_rate	real	പായയിൽ പരത്തി ഇട്ടാൽ കുരുമുളക് പെട്ടെന്ന് ഉണങ്ങും	correct
+S21	evap_cooling	real	മൺകുടത്തിലെ മണ്ണ് സ്വാഭാവികമായി തണുപ്പുള്ളതാണ്	naturally_cold
+S22	evap_cooling	real	വെള്ളം പുറത്തേക്ക് വന്ന് ആവിയാകുമ്പോൾ ചൂട് പോകും	correct
+S23	evap_cooling	real	കാറ്റ് അടിക്കുന്നത് കൊണ്ടാണ് കുടത്തിലെ വെള്ളം തണുക്കുന്നത്	wind_only_cools
+S24	evap_cooling	test	കുടത്തിന് പ്രത്യേക തണുപ്പ് തരാൻ കഴിവുണ്ട്	naturally_cold
+S25	evap_cooling	real	ബാഷ്പീകരണം നടക്കുമ്പോൾ താപം നഷ്ടപ്പെടുന്നു	correct
+S26	evap_cooling	test	ഫ്രിഡ്ജ് ഇല്ലാതെയും കളിമണ്ണ് തണുപ്പ് തരുന്നു	naturally_cold
+S27	evap_cooling	real	ചായ ആറ്റുമ്പോൾ കാറ്റ് അടിക്കുന്നതുകൊണ്ട് തണുക്കുന്നു	wind_only_cools
+S28	evap_cooling	real	ചായ പരത്തി ഒഴിക്കുമ്പോൾ ബാഷ്പീകരണം കൂടി ചൂട് കുറയുന്നു	correct
+S29	evap_cooling	test	വെറും കാറ്റടികൊണ്ട് മാത്രമാണ് ചായ തണുക്കുന്നത്	wind_only_cools
+S30	evap_cooling	test	സുഷിരങ്ങളിലൂടെ വെള്ളം പുറത്തുവന്ന് തണുപ്പ് ഉണ്ടാക്കുന്നു	correct
+S31	evap_state	real	the water went into the air as vapour	correct
+S32	evap_state	test	water is finished and gone	water_disappears
+S33	evap_state	real	floor absorbed the water	soaks_in
+S34	evap_state	real	it evaporated into the atmosphere	correct
+S35	evap_state	test	water just vanished into nothing	water_disappears
+S36	evap_rate	real	spread out clothes get more air and dry fast	correct
+S37	evap_rate	test	both have same water so dry at same time	amount_decides
+S38	evap_rate	real	no sun means clothes never dry	only_hot
+S39	evap_rate	real	wind helps dry clothes quickly	correct
+S40	evap_rate	test	wind does not do anything to the clothes	wind_no_effect
+S41	evap_cooling	real	pots are naturally cold inside	naturally_cold
+S42	evap_cooling	real	water evaporates and takes heat away	correct
+S43	evap_cooling	test	only breeze cools the water down	wind_only_cools
+S44	evap_cooling	real	sweat drying takes body heat away	correct
+S45	evap_cooling	test	clay has cold property in it	naturally_cold
+S46	evap_state	real	കുറച്ചു ദിവസം കഴിയുമ്പോൾ വെള്ളം കാണാനില്ല, അത് വായുവിൽ പോയി	correct
+S47	evap_state	real	വെള്ളം മാഞ്ഞുപോയി	water_disappears
+S48	evap_rate	real	തുണി വിരിച്ചാൽ പെട്ടെന്ന് ഉണങ്ങും കാരണം കൂടുതൽ സ്ഥലം കിട്ടും	correct
+S49	evap_rate	real	അളവ് ഒന്നുതന്നെയായാലും വെയിലത്ത് വച്ചാൽ വേഗം ഉണങ്ങും	correct
+S50	evap_cooling	real	മൺകുടത്തിൽ നിന്നും വെള്ളം പുറത്തു വന്ന് ആവിയാകുന്നു	correct
+S51	evap_state	test	വെള്ളം അപ്രത്യക്ഷമായി	water_disappears
+S52	evap_state	test	മണ്ണോ പാത്രമോ വെള്ളം കുടിച്ചു തീർത്തു	soaks_in
+S53	evap_rate	test	എത്ര പരത്തിയാലും ഒരേപോലെയാണ് ഉണങ്ങുക	amount_decides
+S54	evap_rate	test	തണലിൽ ഒരിക്കലും തുണി ഉണങ്ങില്ലേ ഇല്ലയോ	only_hot
+S55	evap_cooling	test	കാറ്റ് വീശുന്നത് കൊണ്ടാണ് വിയർപ്പ് ഉണങ്ങി തണുക്കുന്നത്	wind_only_cools
+S56	evap_state	real	evaporation happens when liquid turns to gas	correct
+S57	evap_state	real	the water mixed with air	correct
+S58	evap_rate	real	spread pepper dries faster because of surface area	correct
+S59	evap_cooling	real	pouring tea makes it evaporate faster and cool	correct
+S60	evap_cooling	real	pores let water evaporate and cool the pot	correct
