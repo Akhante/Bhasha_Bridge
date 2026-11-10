@@ -1,0 +1,616 @@
+{
+  "_readme": "Check",
+  "chapter": "Evaporation, Class 7",
+  "ui": {
+    "app_name": { "ml": "ഭാഷാ ബ്രിഡ്ജ്", "en": "BhashaBridge" },
+    "pick_child": {
+      "ml": "ആരാണ് പഠിക്കുന്നത്? നിങ്ങളുടെ ചിത്രം തൊടൂ",
+      "en": "Who is learning? Tap your picture"
+    },
+    "enter_pin": { "ml": "നിങ്ങളുടെ പിൻ നൽകൂ", "en": "Enter your PIN" },
+    "start_session": {
+      "ml": "10 മിനിറ്റ് പഠനം തുടങ്ങാം",
+      "en": "Start a 10-minute session"
+    },
+    "record": { "ml": "പറയൂ", "en": "Speak" },
+    "stop": { "ml": "നിർത്തൂ", "en": "Stop" },
+    "type_instead": { "ml": "ടൈപ്പ് ചെയ്യാം", "en": "Type instead" },
+    "done": { "ml": "കഴിഞ്ഞു", "en": "Done" },
+    "readback_question": {
+      "ml": "ഇതാണോ നിങ്ങൾ പറഞ്ഞത്?",
+      "en": "Is this what you said?",
+      "audio": "audio/ui_readback.wav"
+    },
+    "yes": { "ml": "അതെ", "en": "Yes" },
+    "no_again": {
+      "ml": "അല്ല, വീണ്ടും പറയാം",
+      "en": "No, let me say it again"
+    },
+    "choose_closest": {
+      "ml": "ഇതിൽ നിങ്ങളുടെ ചിന്തയോട് ഏറ്റവും അടുത്തത് ഏതാണ്?",
+      "en": "Which of these is closest to what you think?",
+      "audio": "audio/ui_choose_closest.wav"
+    },
+    "next": { "ml": "അടുത്തത്", "en": "Next" },
+    "try_again": { "ml": "ഒന്നുകൂടി ശ്രമിക്കാം", "en": "Let's try once more" },
+    "well_done": { "ml": "നന്നായി!", "en": "Well done!" },
+    "offline_notice": {
+      "ml": "ഇന്റർനെറ്റ് ഇല്ല. പഠനം തുടരാം; ഫലം താൽക്കാലികമായി രേഖപ്പെടുത്തും.",
+      "en": "No internet. You can keep learning; results will be marked as lower-confidence."
+    },
+    "your_next_15": {
+      "ml": "അടുത്ത 15 മിനിറ്റിൽ ചെയ്യാവുന്നത്",
+      "en": "Your next 15 minutes"
+    },
+    "not_enough_evidence": {
+      "ml": "ഇതുവരെ വേണ്ടത്ര തെളിവില്ല",
+      "en": "Not enough evidence yet"
+    },
+    "level_strong": { "ml": "ശക്തം", "en": "Strong" },
+    "level_developing": { "ml": "വളരുന്നു", "en": "Developing" },
+    "level_needs_support": { "ml": "പിന്തുണ വേണം", "en": "Needs support" },
+    "gate_understand": { "ml": "മനസ്സിലാക്കൽ", "en": "Understand" },
+    "gate_express": { "ml": "ഇംഗ്ലീഷിൽ പറയൽ", "en": "Express" },
+    "gate_apply": { "ml": "പ്രയോഗിക്കൽ", "en": "Apply" },
+    "vocab_bridge_title": { "ml": "വാക്കുകളുടെ പാലം", "en": "Word bridge" },
+    "parent_pulse_title": {
+      "ml": "രക്ഷിതാക്കൾക്കുള്ള സന്ദേശം",
+      "en": "Parent Pulse"
+    }
+  },
+  "concepts": [
+    {
+      "id": "evap_state",
+      "title": {
+        "ml": "വെള്ളം എവിടെ പോകുന്നു?",
+        "en": "Where does the water go?"
+      },
+      "correct_description_en": "Says the water changes into water vapour (an invisible gas) and mixes with the air. It does not just disappear and is not just soaked up by the surface.",
+      "understand": {
+        "question": {
+          "ml": "ഒരു ഗ്ലാസിൽ വെള്ളം എടുത്ത് മേശപ്പുറത്ത് വെച്ചു. രണ്ടു ദിവസം കഴിഞ്ഞപ്പോൾ ഗ്ലാസിൽ വെള്ളം ഏതാണ്ട് ഇല്ലാതായി. വെള്ളം എവിടെ പോയി? സ്വന്തം വാക്കുകളിൽ പറയൂ.",
+          "en": "A glass of water is left on a table. Two days later, the glass is almost empty. Where did the water go? Say it in your own words.",
+          "audio": "audio/evap_state_u_q.wav"
+        },
+        "followup": {
+          "ml": "എന്തുകൊണ്ടാണ് അങ്ങനെ കരുതുന്നത്? ഒന്നുകൂടി വിശദീകരിക്കാമോ?",
+          "en": "Why do you think so? Can you explain a little more?",
+          "audio": "audio/evap_state_u_followup.wav"
+        },
+        "choices": [
+          {
+            "text": {
+              "ml": "വെള്ളം കണ്ണിന് കാണാൻ കഴിയാത്ത ജലബാഷ്പമായി മാറി വായുവിൽ കലർന്നു.",
+              "en": "The water changed into invisible water vapour and mixed with the air.",
+              "audio": "audio/evap_state_u_c_correct.wav"
+            },
+            "misconception": "correct"
+          },
+          {
+            "text": {
+              "ml": "വെള്ളം ഇല്ലാതായി, അത് മാഞ്ഞുപോയി.",
+              "en": "The water just disappeared.",
+              "audio": "audio/evap_state_u_c_disappears.wav"
+            },
+            "misconception": "water_disappears"
+          },
+          {
+            "text": {
+              "ml": "വെള്ളം ഗ്ലാസിലൂടെയും മേശയിലൂടെയും ഊറിപ്പോയി.",
+              "en": "The water soaked into the glass or table and went away.",
+              "audio": "audio/evap_state_u_c_soaks.wav"
+            },
+            "misconception": "soaks_in"
+          },
+          {
+            "text": {
+              "ml": "എനിക്ക് ഉറപ്പില്ല.",
+              "en": "I am not sure.",
+              "audio": "audio/evap_state_u_c_unsure.wav"
+            },
+            "misconception": "unclear"
+          }
+        ]
+      },
+      "express": {
+        "question": {
+          "ml": "ബാഷ്പീകരണം (evaporation) എന്താണെന്ന് ഇംഗ്ലീഷിൽ ഒന്നോ രണ്ടോ വാക്യത്തിൽ വിശദീകരിക്കൂ.",
+          "en": "In English, explain in one or two sentences what evaporation is.",
+          "audio": "audio/evap_state_e_q.wav"
+        },
+        "required_terms": ["evaporat", "liquid", "vapo|gas"],
+        "model_answer": {
+          "en": "Evaporation is the change of a liquid into water vapour (a gas) at its surface, and the vapour mixes with the air."
+        },
+        "vocab_bridge": [
+          {
+            "ml": "ബാഷ്പീകരണം",
+            "en": "evaporation",
+            "audio": "audio/vb_evaporation.wav"
+          },
+          { "ml": "ദ്രാവകം", "en": "liquid", "audio": "audio/vb_liquid.wav" },
+          { "ml": "വാതകം", "en": "gas", "audio": "audio/vb_gas.wav" },
+          {
+            "ml": "ജലബാഷ്പം",
+            "en": "water vapour",
+            "audio": "audio/vb_water_vapour.wav"
+          }
+        ]
+      },
+      "apply": {
+        "scenario": {
+          "ml": "മഴ കഴിഞ്ഞപ്പോൾ വരാന്തയിലെ തറ നനഞ്ഞിരുന്നു. ഉച്ചയായപ്പോഴേക്കും തറ ഉണങ്ങി. തറയിലെ വെള്ളത്തിന് എന്ത് സംഭവിച്ചു?",
+          "en": "After the rain, the veranda floor was wet. By afternoon it was dry. What happened to the water on the floor?",
+          "audio": "audio/evap_state_a_q.wav"
+        },
+        "choices": [
+          {
+            "text": {
+              "ml": "വെള്ളം ജലബാഷ്പമായി മാറി വായുവിലേക്ക് പോയി.",
+              "en": "It changed into water vapour and went into the air."
+            },
+            "correct": true
+          },
+          {
+            "text": { "ml": "വെള്ളം ഇല്ലാതായി.", "en": "It disappeared." },
+            "correct": false,
+            "misconception": "water_disappears"
+          },
+          {
+            "text": {
+              "ml": "തറ മുഴുവൻ വെള്ളവും വലിച്ചെടുത്ത് ഉള്ളിൽ സൂക്ഷിച്ചു.",
+              "en": "The floor soaked up all the water and kept it inside."
+            },
+            "correct": false,
+            "misconception": "soaks_in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evap_rate",
+      "title": {
+        "ml": "എന്താണ് വേഗം ഉണങ്ങാൻ സഹായിക്കുന്നത്?",
+        "en": "What makes things dry faster?"
+      },
+      "correct_description_en": "Says the spread-out shirt in sun and wind dries first, because more of its water touches the air (larger exposed surface) and warmth and wind carry the water away as vapour faster.",
+      "understand": {
+        "question": {
+          "ml": "അമ്മ ഒരേപോലെ നനഞ്ഞ രണ്ട് ഷർട്ടുകൾ അലക്കി. ഒന്ന് വെയിലും കാറ്റുമുള്ള സ്ഥലത്ത് നിവർത്തി അയയിൽ ഇട്ടു. മറ്റൊന്ന് മടക്കി തണലിൽ വെച്ചു. ഏത് ഷർട്ടാണ് ആദ്യം ഉണങ്ങുക? എന്തുകൊണ്ട്?",
+          "en": "Amma washed two shirts that are equally wet. She hung one spread out on the line in sun and wind. She left the other folded in the shade. Which dries first, and why?",
+          "audio": "audio/evap_rate_u_q.wav"
+        },
+        "followup": {
+          "ml": "എന്തുകൊണ്ടാണ് അങ്ങനെ കരുതുന്നത്? ഒന്നുകൂടി വിശദീകരിക്കാമോ?",
+          "en": "Why do you think so? Can you explain a little more?",
+          "audio": "audio/evap_rate_u_followup.wav"
+        },
+        "choices": [
+          {
+            "text": {
+              "ml": "നിവർത്തി വെയിലിലും കാറ്റിലും ഇട്ട ഷർട്ട്. കൂടുതൽ വെള്ളം വായുവുമായി തൊടുന്നു; ചൂടും കാറ്റും വെള്ളത്തെ വേഗം ജലബാഷ്പമാക്കി കൊണ്ടുപോകുന്നു.",
+              "en": "The spread-out shirt in sun and wind. More of its water touches the air, and warmth and wind carry the water away faster as vapour.",
+              "audio": "audio/evap_rate_u_c_correct.wav"
+            },
+            "misconception": "correct"
+          },
+          {
+            "text": {
+              "ml": "രണ്ടും ഒരേ സമയത്ത് ഉണങ്ങും, കാരണം രണ്ടിലും ഒരേ അളവ് വെള്ളമാണ്.",
+              "en": "Both dry at the same time, because both have the same amount of water.",
+              "audio": "audio/evap_rate_u_c_amount.wav"
+            },
+            "misconception": "amount_decides"
+          },
+          {
+            "text": {
+              "ml": "വെയിലുണ്ടെങ്കിൽ മാത്രമേ തുണി ഉണങ്ങൂ; തണലിൽ ഉണങ്ങില്ല.",
+              "en": "Clothes dry only when it is sunny; they never dry in the shade.",
+              "audio": "audio/evap_rate_u_c_onlyhot.wav"
+            },
+            "misconception": "only_hot"
+          },
+          {
+            "text": {
+              "ml": "കാറ്റ് ഒരു വ്യത്യാസവും ഉണ്ടാക്കുന്നില്ല; ചൂട് മാത്രമാണ് പ്രധാനം.",
+              "en": "Wind makes no difference; only heat matters.",
+              "audio": "audio/evap_rate_u_c_wind.wav"
+            },
+            "misconception": "wind_no_effect"
+          },
+          {
+            "text": {
+              "ml": "എനിക്ക് ഉറപ്പില്ല.",
+              "en": "I am not sure.",
+              "audio": "audio/evap_rate_u_c_unsure.wav"
+            },
+            "misconception": "unclear"
+          }
+        ]
+      },
+      "express": {
+        "question": {
+          "ml": "നനഞ്ഞ തുണി വിരിച്ച് കാറ്റത്ത് ഇട്ടാൽ വേഗം ഉണങ്ങുന്നത് എന്തുകൊണ്ടാണെന്ന് ഇംഗ്ലീഷിൽ പറയൂ.",
+          "en": "Explain in English why wet clothes dry faster when they are spread out in the wind.",
+          "audio": "audio/evap_rate_e_q.wav"
+        },
+        "required_terms": ["evaporat", "surface", "air|wind"],
+        "model_answer": {
+          "en": "When wet clothes are spread out, a larger surface area is exposed to the air, so evaporation is faster. Wind carries away the water vapour, which speeds up evaporation even more."
+        },
+        "vocab_bridge": [
+          {
+            "ml": "ഉപരിതല വിസ്തീർണം",
+            "en": "surface area",
+            "audio": "audio/vb_surface_area.wav"
+          },
+          {
+            "ml": "താപനില",
+            "en": "temperature",
+            "audio": "audio/vb_temperature.wav"
+          },
+          { "ml": "കാറ്റ്", "en": "wind", "audio": "audio/vb_wind.wav" }
+        ]
+      },
+      "apply": {
+        "scenario": {
+          "ml": "അമ്മയ്ക്ക് മുറ്റത്ത് കുരുമുളക് ഉണക്കണം. എല്ലാം ഒരുമിച്ച് കൂനയാക്കി ഇടണോ, അതോ പായയിൽ കനംകുറച്ച് പരത്തി ഇടണോ? ഏതാണ് വേഗം ഉണങ്ങുക?",
+          "en": "Amma wants to dry pepper in the yard. Should she heap it in one pile or spread it thin on a mat? Which dries faster?",
+          "audio": "audio/evap_rate_a_q.wav"
+        },
+        "choices": [
+          {
+            "text": {
+              "ml": "പായയിൽ കനംകുറച്ച് പരത്തിയത്; കൂടുതൽ കുരുമുളക് വായുവിലും വെയിലിലും തൊടും.",
+              "en": "Spread thin on the mat; more of the pepper is touched by air and sun."
+            },
+            "correct": true
+          },
+          {
+            "text": {
+              "ml": "രണ്ടും ഒരേ സമയം, കാരണം കുരുമുളകിന്റെ അളവ് ഒന്നുതന്നെയാണ്.",
+              "en": "Same time, because the amount of pepper is the same."
+            },
+            "correct": false,
+            "misconception": "amount_decides"
+          },
+          {
+            "text": {
+              "ml": "കൂന വേഗം ഉണങ്ങും, കാരണം എല്ലാം ഒരുമിച്ചിരുന്ന് ചൂട് പിടിച്ചുനിർത്തും.",
+              "en": "The pile, because everything together holds the heat."
+            },
+            "correct": false,
+            "misconception": "other"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evap_cooling",
+      "title": {
+        "ml": "ബാഷ്പീകരണവും തണുപ്പും",
+        "en": "Evaporation and cooling"
+      },
+      "correct_description_en": "Says that evaporating water takes heat away from the pot/water/skin, which makes it cooler. Wind may be mentioned as speeding evaporation, but the answer must link the cooling to evaporation.",
+      "understand": {
+        "question": {
+          "ml": "വേനൽക്കാലത്ത് ഫ്രിഡ്ജ് ഇല്ലാതെ തന്നെ മൺകുടത്തിലെ വെള്ളം തണുത്തിരിക്കുന്നു. എന്തുകൊണ്ടാണ് അങ്ങനെ?",
+          "en": "In summer, the water in an earthen pot stays cool even without a fridge. Why?",
+          "audio": "audio/evap_cooling_u_q.wav"
+        },
+        "followup": {
+          "ml": "എന്തുകൊണ്ടാണ് അങ്ങനെ കരുതുന്നത്? ഒന്നുകൂടി വിശദീകരിക്കാമോ?",
+          "en": "Why do you think so? Can you explain a little more?",
+          "audio": "audio/evap_cooling_u_followup.wav"
+        },
+        "choices": [
+          {
+            "text": {
+              "ml": "കുടത്തിന്റെ സൂക്ഷ്മ സുഷിരങ്ങളിലൂടെ കുറച്ച് വെള്ളം പുറത്തെത്തി ബാഷ്പമാകുന്നു. ബാഷ്പമാകുമ്പോൾ ചൂടിനെ എടുത്തുകൊണ്ടുപോകുന്നതിനാൽ ഉള്ളിലെ വെള്ളം തണുക്കുന്നു.",
+              "en": "A little water seeps through tiny pores and evaporates outside. Evaporating water takes heat away, so the water inside cools.",
+              "audio": "audio/evap_cooling_u_c_correct.wav"
+            },
+            "misconception": "correct"
+          },
+          {
+            "text": {
+              "ml": "മണ്ണിന് സ്വതവേ തണുപ്പാണ്; അതുകൊണ്ടാണ് വെള്ളവും തണുക്കുന്നത്.",
+              "en": "Clay is naturally cold, so the water gets cold.",
+              "audio": "audio/evap_cooling_u_c_cold.wav"
+            },
+            "misconception": "naturally_cold"
+          },
+          {
+            "text": {
+              "ml": "കുടത്തിൽ തട്ടുന്ന കാറ്റ് മാത്രമാണ് വെള്ളത്തെ തണുപ്പിക്കുന്നത്.",
+              "en": "Only the breeze touching the pot cools the water.",
+              "audio": "audio/evap_cooling_u_c_wind.wav"
+            },
+            "misconception": "wind_only_cools"
+          },
+          {
+            "text": {
+              "ml": "എനിക്ക് ഉറപ്പില്ല.",
+              "en": "I am not sure.",
+              "audio": "audio/evap_cooling_u_c_unsure.wav"
+            },
+            "misconception": "unclear"
+          }
+        ]
+      },
+      "express": {
+        "question": {
+          "ml": "വിയർപ്പ് ഉണങ്ങുമ്പോൾ നമുക്ക് തണുപ്പ് തോന്നുന്നത് എന്തുകൊണ്ടാണെന്ന് ഇംഗ്ലീഷിൽ പറയൂ.",
+          "en": "Explain in English why we feel cool when sweat dries on our skin.",
+          "audio": "audio/evap_cooling_e_q.wav"
+        },
+        "required_terms": ["evaporat", "heat", "cool"],
+        "model_answer": {
+          "en": "When sweat evaporates from the skin, it takes heat from our body. Losing this heat makes the skin feel cool."
+        },
+        "vocab_bridge": [
+          { "ml": "താപം", "en": "heat", "audio": "audio/vb_heat.wav" },
+          { "ml": "തണുക്കൽ", "en": "cooling", "audio": "audio/vb_cooling.wav" },
+          { "ml": "വിയർപ്പ്", "en": "sweat", "audio": "audio/vb_sweat.wav" },
+          { "ml": "സുഷിരം", "en": "pore", "audio": "audio/vb_pore.wav" }
+        ]
+      },
+      "apply": {
+        "scenario": {
+          "ml": "ചൂടുചായ ഒരു ഗ്ലാസിൽ വെച്ചാൽ പതുക്കെയേ തണുക്കൂ. രണ്ട് ഗ്ലാസുകളിലേക്ക് മാറിമാറി ഒഴിച്ച് ആറ്റിയാൽ വേഗം തണുക്കും. എന്തുകൊണ്ട്?",
+          "en": "Hot tea cools slowly in one tumbler. Pouring it back and forth between two tumblers cools it faster. Why?",
+          "audio": "audio/evap_cooling_a_q.wav"
+        },
+        "choices": [
+          {
+            "text": {
+              "ml": "ഒഴിക്കുമ്പോൾ ചായ കനംകുറഞ്ഞ ധാരയായി വായുവിൽ പരക്കുന്നു; കൂടുതൽ ചായ ബാഷ്പമായി ചൂട് എടുത്തുപോകുന്നു.",
+              "en": "Pouring spreads the tea into a thin stream in the air, so more of it evaporates and takes heat away."
+            },
+            "correct": true
+          },
+          {
+            "text": {
+              "ml": "ഒഴിക്കുമ്പോൾ ചായ ഒഴിഞ്ഞ ഗ്ലാസിൽ നിന്ന് തണുപ്പ് വാങ്ങുന്നു.",
+              "en": "The tea takes coldness from the empty tumbler."
+            },
+            "correct": false,
+            "misconception": "naturally_cold"
+          },
+          {
+            "text": {
+              "ml": "ഒഴിക്കുമ്പോൾ ഉണ്ടാകുന്ന കാറ്റ് മാത്രമാണ് തണുപ്പിക്കുന്നത്.",
+              "en": "Only the air movement made by pouring cools it."
+            },
+            "correct": false,
+            "misconception": "wind_only_cools"
+          }
+        ]
+      }
+    }
+  ],
+  "misconceptions": [
+    {
+      "id": "water_disappears",
+      "concept": "evap_state",
+      "description_en": "Thinks the water simply disappears or vanishes when it dries; does not know it changes into water vapour in the air.",
+      "sample_wrong_answer": {
+        "ml": "വെള്ളം തീർന്നുപോയി, ഇല്ലാതായി.",
+        "en": "The water finished and vanished."
+      },
+      "explanation": {
+        "ml": "വെള്ളം ഒരിക്കലും ഇല്ലാതാകുന്നില്ല. അത് കണ്ണിന് കാണാൻ കഴിയാത്ത ജലബാഷ്പമായി മാറി വായുവിൽ ചേരുന്നു. അലക്കിയ തുണി ഉണങ്ങുമ്പോൾ അതിലെ വെള്ളം വായുവിലേക്ക് പോകുകയാണ്.",
+        "en": "Water never disappears. It changes into invisible water vapour and mixes with the air. When washed clothes dry, their water goes into the air.",
+        "audio": "audio/water_disappears_expl.wav"
+      },
+      "activity": {
+        "ml": "ബോർഡിൽ നനഞ്ഞ കൈപ്പത്തി അമർത്തി അതിന്റെ അതിര് ചോക്ക് കൊണ്ട് വരയ്ക്കുക. ഓരോ മിനിറ്റിലും നോക്കി അതിര് വരയ്ക്കുക. വെള്ളം എവിടെ പോയെന്ന് ചർച്ച ചെയ്യുക.",
+        "en": "Press a wet palm on the board and outline it in chalk. Check and outline again every minute. Discuss where the water went."
+      }
+    },
+    {
+      "id": "soaks_in",
+      "concept": "evap_state",
+      "description_en": "Thinks the water soaks into the ground, cloth or container instead of going into the air as vapour.",
+      "sample_wrong_answer": {
+        "ml": "മണ്ണ് വെള്ളം വലിച്ചെടുത്തു.",
+        "en": "The soil sucked up the water."
+      },
+      "explanation": {
+        "ml": "മണ്ണും തുണിയും കുറച്ച് വെള്ളം വലിച്ചെടുക്കും. പക്ഷേ ഉണങ്ങുമ്പോൾ വെള്ളം ജലബാഷ്പമായി വായുവിൽ പോകുന്നു. തുറന്നു വെച്ച സ്റ്റീൽ പാത്രത്തിലെ വെള്ളവും കുറയുന്നത് ഇങ്ങനെയാണ്; ആ പാത്രം ഒന്നും വലിച്ചെടുക്കുന്നില്ല.",
+        "en": "Soil and cloth do soak up some water. But when things dry, the water goes into the air as vapour. Water in an open steel pot also goes down this way, and the steel soaks up nothing.",
+        "audio": "audio/soaks_in_expl.wav"
+      },
+      "activity": {
+        "ml": "ഒരു സ്റ്റീൽ പ്ലേറ്റിൽ കുറച്ച് തുള്ളി വെള്ളം ഇടുക. ഉണങ്ങുന്നത് നിരീക്ഷിക്കുക. സ്റ്റീൽ വെള്ളം വലിച്ചെടുക്കുമോ? പിന്നെ വെള്ളം എവിടെ പോയി?",
+        "en": "Put a few drops of water on a steel plate and watch them dry. Does steel soak up water? Then where did it go?"
+      }
+    },
+    {
+      "id": "amount_decides",
+      "concept": "evap_rate",
+      "description_en": "Thinks drying speed depends only on how much water there is; ignores how much of the water is exposed to the air (the surface).",
+      "sample_wrong_answer": {
+        "ml": "രണ്ടും ഒരേ സമയം ഉണങ്ങും, ഒരേ വെള്ളമല്ലേ.",
+        "en": "Both dry together, it is the same water."
+      },
+      "explanation": {
+        "ml": "ഒരേ അളവ് വെള്ളമാണെങ്കിലും വിരിച്ചിട്ടാൽ കൂടുതൽ വെള്ളം വായുവുമായി തൊടും. വായുവിൽ തൊടുന്ന ഭാഗത്തുനിന്നാണ് വെള്ളം ബാഷ്പമാകുന്നത്. അതിനാൽ വിരിച്ച തുണി വേഗം ഉണങ്ങും.",
+        "en": "Even with the same amount of water, spreading the cloth lets more water touch the air. Water turns to vapour where it meets the air, so a spread-out cloth dries faster.",
+        "audio": "audio/amount_decides_expl.wav"
+      },
+      "activity": {
+        "ml": "ഒരേ അളവ് വെള്ളം ഒരു സ്റ്റീൽ പ്ലേറ്റിൽ ഒരു തുള്ളിയായും മറ്റൊരു പ്ലേറ്റിൽ വിരൽകൊണ്ട് പരത്തിയും ഇടുക. ഏതാണ് ആദ്യം ഉണങ്ങുന്നതെന്ന് നോക്കുക.",
+        "en": "Put the same amount of water as one drop on one steel plate and spread thin with a finger on another. See which dries first."
+      }
+    },
+    {
+      "id": "only_hot",
+      "concept": "evap_rate",
+      "description_en": "Thinks drying needs strong sun or heat; does not know water also evaporates in the shade and at normal temperature, only more slowly.",
+      "sample_wrong_answer": {
+        "ml": "വെയിലില്ലെങ്കിൽ ഉണങ്ങില്ല.",
+        "en": "Without sun it will not dry."
+      },
+      "explanation": {
+        "ml": "വെയിലില്ലെങ്കിലും വെള്ളം ബാഷ്പമാകും; ചൂട് കൂടുമ്പോൾ വേഗം കൂടുമെന്നേയുള്ളൂ. രാത്രിയിലും തണലിലും അയയിലെ തുണി പതുക്കെ ഉണങ്ങുന്നത് ഇതുകൊണ്ടാണ്.",
+        "en": "Water evaporates even without sun. Heat just makes it faster. That is why clothes on the line slowly dry even at night or in the shade.",
+        "audio": "audio/only_hot_expl.wav"
+      },
+      "activity": {
+        "ml": "വെയിൽ തട്ടാത്ത ക്ലാസ്മുറിയിൽ കൈപ്പത്തിയുടെ പുറത്ത് വെള്ളം പുരട്ടി നിശ്ചലമായി പിടിക്കുക. വെയിലില്ലെങ്കിലും അത് ഉണങ്ങുന്നത് ശ്രദ്ധിക്കുക.",
+        "en": "In the classroom, away from the sun, wet the back of your hand and hold it still. Notice that it dries even without sun."
+      }
+    },
+    {
+      "id": "wind_no_effect",
+      "concept": "evap_rate",
+      "description_en": "Thinks wind or moving air makes no difference to how fast things dry.",
+      "sample_wrong_answer": {
+        "ml": "കാറ്റ് ഒരു കാര്യവുമില്ല.",
+        "en": "Wind does not matter."
+      },
+      "explanation": {
+        "ml": "കാറ്റ് തുണിയുടെ അടുത്തുള്ള ജലബാഷ്പത്തെ കൊണ്ടുപോകുകയും പുതിയ വരണ്ട വായു എത്തിക്കുകയും ചെയ്യും. അതുകൊണ്ടാണ് കാറ്റുള്ള ദിവസം തുണി വേഗം ഉണങ്ങുന്നത്.",
+        "en": "Wind carries away the vapour near the cloth and brings in fresh dry air. That is why clothes dry faster on a windy day.",
+        "audio": "audio/wind_no_effect_expl.wav"
+      },
+      "activity": {
+        "ml": "രണ്ടു കൈകളുടെയും പുറത്ത് വെള്ളം പുരട്ടുക. ഒന്ന് വീശുകയും മറ്റേത് നിശ്ചലമായി പിടിക്കുകയും ചെയ്യുക. ഏതാണ് ആദ്യം ഉണങ്ങുന്നത്?",
+        "en": "Wet the backs of both hands. Fan one and hold the other still. Which dries first?"
+      }
+    },
+    {
+      "id": "naturally_cold",
+      "concept": "evap_cooling",
+      "description_en": "Thinks clay pots, wet cloth or the water are simply cold by nature; links the coolness to the material, not to evaporation taking heat away.",
+      "sample_wrong_answer": {
+        "ml": "മൺകുടം സ്വതവേ തണുപ്പുള്ളതാണ്.",
+        "en": "The clay pot is cold by nature."
+      },
+      "explanation": {
+        "ml": "കുടത്തിലെ ചെറിയ സുഷിരങ്ങളിലൂടെ വെള്ളം പുറത്തെത്തി ബാഷ്പമാകുന്നു. ബാഷ്പമാകാൻ ചൂട് വേണം; അത് കുടത്തിൽ നിന്നും വെള്ളത്തിൽ നിന്നും എടുക്കുന്നു. അതുകൊണ്ട് ഉള്ളിലെ വെള്ളം തണുക്കുന്നു.",
+        "en": "Water reaches the outside through tiny pores and evaporates. Evaporation needs heat, which it takes from the pot and the water, so the water inside cools.",
+        "audio": "audio/naturally_cold_expl.wav"
+      },
+      "activity": {
+        "ml": "മുറിയിലെ താപനിലയിലുള്ള വെള്ളത്തിൽ ഒരു വിരൽ നനയ്ക്കുക. നനഞ്ഞ വിരലും ഉണങ്ങിയ വിരലും ഉയർത്തിപ്പിടിക്കുക. നനഞ്ഞ വിരലിന് എന്തുകൊണ്ട് തണുപ്പ് തോന്നുന്നു?",
+        "en": "Wet one finger in room-temperature water. Hold up the wet and a dry finger. Why does the wet one feel cooler?"
+      }
+    },
+    {
+      "id": "wind_only_cools",
+      "concept": "evap_cooling",
+      "description_en": "Thinks the cooling is caused only by the breeze, not by evaporation taking heat away.",
+      "sample_wrong_answer": {
+        "ml": "കാറ്റ് അടിക്കുന്നതുകൊണ്ടാണ് തണുക്കുന്നത്.",
+        "en": "It cools because the wind blows on it."
+      },
+      "explanation": {
+        "ml": "കാറ്റ് ബാഷ്പീകരണം വേഗത്തിലാക്കി സഹായിക്കും. പക്ഷേ തണുപ്പിക്കുന്നത് ബാഷ്പമാകുന്ന വെള്ളം ചൂട് എടുക്കുന്നതാണ്. വിയർപ്പ് ഉണങ്ങുമ്പോൾ നമുക്ക് തണുപ്പ് തോന്നുന്നതും ഇതുകൊണ്ടാണ്.",
+        "en": "Wind helps by speeding up evaporation, but the cooling comes from the evaporating water taking heat away. This is also why we feel cool when sweat dries.",
+        "audio": "audio/wind_only_cools_expl.wav"
+      },
+      "activity": {
+        "ml": "ഉണങ്ങിയ കൈയും നനഞ്ഞ കൈയും ഒരേപോലെ വീശുക. ഏത് കൈക്കാണ് കൂടുതൽ തണുപ്പ് തോന്നുന്നത്? കാറ്റ് മാത്രമാണോ കാരണം?",
+        "en": "Fan a dry hand and a wet hand equally. Which feels cooler? Is wind the only reason?"
+      }
+    }
+  ],
+  "home_contexts": [
+    {
+      "id": "laundry",
+      "ml": "അയയിലെ അലക്കിയ തുണി",
+      "en": "Washed clothes on the line"
+    },
+    {
+      "id": "pepper",
+      "ml": "മുറ്റത്ത് ഉണക്കുന്ന കുരുമുളക്",
+      "en": "Pepper drying in the yard"
+    },
+    {
+      "id": "wet_floor",
+      "ml": "മഴയ്ക്ക് ശേഷം നനഞ്ഞ തറ",
+      "en": "Wet floor after rain"
+    },
+    {
+      "id": "fish_copra",
+      "ml": "ഉണക്കമീനും കൊപ്രയും",
+      "en": "Fish and copra drying"
+    },
+    {
+      "id": "tea",
+      "ml": "ഗ്ലാസുകളിൽ ചായ ആറ്റുന്നത്",
+      "en": "Cooling tea between tumblers"
+    }
+  ],
+  "kitchen_experiment": {
+    "title": { "ml": "അടുക്കളയിലെ പരീക്ഷണം", "en": "Kitchen-table experiment" },
+    "steps": {
+      "ml": "ഒരേ അളവ് വെള്ളം ഒരു വീതിയുള്ള പ്ലേറ്റിലും ഒരു ഇടുങ്ങിയ ഗ്ലാസിലും ഒഴിക്കുക. രണ്ടും ഒരേ സ്ഥലത്ത് വെക്കുക. രണ്ടു മണിക്കൂർ കഴിഞ്ഞ് ഏതിലാണ് വെള്ളം കൂടുതൽ കുറഞ്ഞതെന്ന് നോക്കുക.",
+      "en": "Pour the same amount of water into a wide plate and a narrow glass. Keep both in the same place. After two hours, check which one lost more water."
+    },
+    "fair_test_note": {
+      "ml": "ശ്രദ്ധിക്കുക: രണ്ടും ഒരേ ചൂടിലും ഒരേ കാറ്റിലും ആയിരിക്കണം. അപ്പോഴേ പരീക്ഷണം ന്യായമാകൂ.",
+      "en": "Remember: both must have the same warmth and the same airflow. Only then is the test fair."
+    }
+  },
+  "pulse": {
+    "intro": {
+      "ml": "നമസ്കാരം. ഈ ആഴ്ചത്തെ കുട്ടിയുടെ പഠനത്തെക്കുറിച്ച് ഒരു ചെറിയ കാര്യം.",
+      "en": "Hello. A short note about your child's learning this week.",
+      "audio": "audio/pulse_intro.wav"
+    },
+    "outro": {
+      "ml": "ഇന്ന് രാത്രി ഭക്ഷണ സമയത്ത് ഇത് ചോദിച്ചുനോക്കൂ.",
+      "en": "Try asking this at dinner tonight.",
+      "audio": "audio/pulse_outro.wav"
+    },
+    "strong": {
+      "understand": {
+        "ml": "ബാഷ്പീകരണത്തെക്കുറിച്ച് കുട്ടി സ്വന്തം വാക്കുകളിൽ നന്നായി വിശദീകരിക്കുന്നു.",
+        "en": "Your child explains evaporation well in their own words."
+      },
+      "express": {
+        "ml": "പാഠത്തിലെ ശാസ്ത്രപദങ്ങൾ ഇംഗ്ലീഷിൽ കുട്ടി ശരിയായി ഉപയോഗിക്കുന്നു.",
+        "en": "Your child uses the science words correctly in English."
+      },
+      "apply": {
+        "ml": "വീട്ടിലെ പുതിയ സാഹചര്യങ്ങളിൽ പാഠം പ്രയോഗിക്കാൻ കുട്ടിക്ക് കഴിയുന്നുണ്ട്.",
+        "en": "Your child can use the lesson in new situations at home."
+      }
+    },
+    "support": {
+      "understand": {
+        "ml": "ബാഷ്പീകരണത്തിന്റെ ആശയം ഉറപ്പിക്കാൻ കുട്ടിക്ക് കുറച്ചുകൂടി പിന്തുണ വേണം.",
+        "en": "Your child needs a little more support to feel sure about the idea of evaporation."
+      },
+      "express": {
+        "ml": "ആശയം മനസ്സിലായിട്ടുണ്ട്; ഇംഗ്ലീഷിൽ ഉത്തരം പറയാൻ കുറച്ച് പരിശീലനം വേണം.",
+        "en": "The idea is understood; a little practice is needed to answer in English."
+      },
+      "apply": {
+        "ml": "പുതിയ സാഹചര്യങ്ങളിൽ പ്രയോഗിക്കാൻ കുറച്ചുകൂടി ഉദാഹരണങ്ങൾ ചെയ്തുനോക്കാം.",
+        "en": "A few more examples will help with using the idea in new situations."
+      }
+    }
+  },
+  "dinner_questions": {
+    "evap_state": {
+      "ml": "മഴ കഴിഞ്ഞ് മുറ്റത്തെ നനഞ്ഞ തറ ഉണങ്ങുമ്പോൾ ആ വെള്ളം എവിടെ പോകുന്നു എന്ന് ചോദിക്കൂ.",
+      "en": "Ask where the water from the wet yard goes when it dries after rain."
+    },
+    "evap_rate": {
+      "ml": "നനഞ്ഞ തുണി മടക്കിവെക്കുന്നതിനെക്കാൾ വിരിച്ചിടുമ്പോൾ വേഗം ഉണങ്ങുന്നത് എന്തുകൊണ്ടെന്ന് ചോദിക്കൂ.",
+      "en": "Ask her why the wet cloth dries faster when it is spread out."
+    },
+    "evap_cooling": {
+      "ml": "ചായ ഒരു ഗ്ലാസിൽ നിന്ന് മറ്റൊന്നിലേക്ക് ആറ്റുമ്പോൾ വേഗം തണുക്കുന്നത് എന്തുകൊണ്ടെന്ന് ചോദിക്കൂ.",
+      "en": "Ask why tea cools faster when it is poured between two tumblers."
+    }
+  },
+  "classroom_activity": {
+    "ml": "രണ്ടു കൈകളുടെയും പുറത്ത് വെള്ളം പുരട്ടുക. ഒന്ന് വീശുക, മറ്റേത് നിശ്ചലമായി പിടിക്കുക. ഏതാണ് ആദ്യം ഉണങ്ങുന്നത്, ഏതിനാണ് കൂടുതൽ തണുപ്പ് തോന്നുന്നത്? എന്തുകൊണ്ടെന്ന് ചർച്ച ചെയ്യുക.",
+    "en": "Wet the backs of both hands. Fan one and hold the other still. Which dries first, and which feels cooler? Discuss why."
+  }
+}
