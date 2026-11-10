@@ -34,3 +34,12 @@ function clearEvidence(childId) {
     console.error("Failed to clear evidence:", e);
   }
 }
+
+function loadEvidence(childId) {
+  return JSON.parse(localStorage.getItem("bb_evidence_" + childId) || "[]");
+}
+function saveEvidence(childId, item) {
+  const all = loadEvidence(childId);
+  all.push(item);
+  localStorage.setItem("bb_evidence_" + childId, JSON.stringify(all));
+}

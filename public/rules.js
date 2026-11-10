@@ -55,3 +55,44 @@ function nextActivity(evidence, conceptId) {
     text: actions[weakest],
   };
 }
+
+function gateState(evidence, conceptId, gate) {
+  let pass = 0,
+    fail = 0,
+    n = 0;
+  for (const e of evidence) {
+    if (e.concept !== conceptId || e.gate !== gate) continue;
+    const w = e.confidence === "low" ? 0.5 : 1; // offline evidence counts half
+    if (e.result === "pass") pass += w;
+    else fail += w;
+    n++;
+  }
+  const estimate = (pass + 1) / (pass + fail + 2);
+  let label = "not enough evidence yet";
+  if (n >= 3)
+    label =
+      estimate >= 0.7
+        ? "strong"
+        : estimate >= 0.45
+          ? "developing"
+          : "needs support";
+  return { n, estimate, label };
+}
+
+function nextActivity(evidence, conceptId) {
+  const actions = {
+    understand: "Try a new everyday example and predict what happens",
+    express: "Learn the Malayalam-English word pairs, then answer in English",
+    apply: "Try a new situation with fewer hints",
+  };
+  let weakest = "understand",
+    lowest = 2;
+  for (const g of ["understand", "express", "apply"]) {
+    const s = gateState(evidence, conceptId, g);
+    if (s.estimate < lowest) {
+      lowest = s.estimate;
+      weakest = g;
+    }
+  }
+  return { gate: weakest, text: actions[weakest] };
+}
