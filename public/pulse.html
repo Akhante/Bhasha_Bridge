@@ -1,213 +1,246 @@
 <!doctype html>
 <html lang="ml">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <title>Parent Pulse · രക്ഷിതാക്കൾക്കുള്ള സന്ദേശം</title>
-    <style>
-      :root {
-        --bg: #f2f7f3;
-        --card: #ffffff;
-        --ink: #102a27;
-        --muted: #53716b;
-        --brand: #0f4c4a;
-        --track: #d2e3de;
-        --gold: #d97706;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        padding: 20px 16px 40px;
-        background: var(--bg);
-        color: var(--ink);
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          "Noto Sans Malayalam",
-          sans-serif;
-        font-size: 18px;
-        line-height: 1.5;
-      }
-      main {
-        max-width: 560px;
-        margin: 0 auto;
-      }
-      .header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-      h1 {
-        font-size: 1.4rem;
-        margin: 0;
-        color: var(--brand);
-      }
-      .back-btn {
-        text-decoration: none;
-        font-size: 0.9rem;
-        background: var(--track);
-        padding: 6px 14px;
-        border-radius: 8px;
-        color: var(--ink);
-        font-weight: 700;
-      }
-      .pulse-card {
-        background: var(--card);
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
-        border-left: 6px solid var(--brand);
-      }
-      .audio-player {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-top: 16px;
-        background: #e6f0ed;
-        padding: 12px 16px;
-        border-radius: 12px;
-      }
-      .play-btn {
-        background: var(--brand);
-        color: #fff;
-        border: none;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        font-size: 1.3rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .section-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin: 24px 0 10px;
-        color: var(--brand);
-      }
-      .dinner-card {
-        background: #fffbeb;
-        border: 1px solid #fde68a;
-        border-radius: 14px;
-        padding: 18px;
-      }
-      .dinner-card b {
-        color: var(--gold);
-        display: block;
-        margin-bottom: 8px;
-        font-size: 1rem;
-      }
-      .ml {
-        display: block;
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin-bottom: 4px;
-      }
-      .en {
-        display: block;
-        font-size: 0.95rem;
-        color: var(--muted);
-      }
-      .note {
-        font-size: 0.85rem;
-        color: var(--muted);
-        text-align: center;
-        margin-top: 24px;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="header-row">
-        <h1>Parent Pulse</h1>
-        <a class="back-btn" href="index.html">← Home</a>
-      </div>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+		<meta name="theme-color" content="#0f4c4a" />
+		<title>Parent Pulse · BhashaBridge</title>
+		<link rel="icon" href="icon.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="style.css" />
+		<style>
+			body { background: #e8f1ec; }
+			header { border-bottom-width: 4px; }
+			main { max-width: 760px; padding-top: 30px; }
+			.pulse-heading { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 20px; }
+			.eyebrow { margin: 0 0 4px; color: var(--leaf); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+			h1 { margin: 0; font-size: 1.8rem; }
+			.context { margin: 5px 0 0; color: var(--mute); font-size: .92rem; }
+			.back { color: var(--green); font-size: .88rem; font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 3px; white-space: nowrap; }
+			.pulse-body { display: grid; grid-template-columns: minmax(0, 1fr) 245px; gap: 18px; align-items: start; }
+			.message { display: grid; gap: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+			.message-part { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+			.message-part:last-child { border-bottom: 0; }
+			.part-label { margin: 0 0 8px; color: var(--mute); font-size: .78rem; font-weight: 800; }
+			.part-text { margin: 0; font-size: 1.1rem; line-height: 1.8; }
+			.part-text .en { margin-top: 5px; }
+			.audio-panel { background: #143b35; color: #fff; padding: 18px; border-radius: 10px; }
+			.audio-panel h2 { font-size: 1rem; line-height: 1.4; margin: 0 0 6px; }
+			.audio-panel p { margin: 0; color: #d3e4dc; font-size: .84rem; line-height: 1.55; }
+			.audio-actions { display: flex; gap: 8px; margin-top: 16px; }
+			.audio-actions .btn { margin: 0; min-height: 48px; padding: 8px 12px; border-radius: 8px; box-shadow: none; }
+			.audio-actions .btn.alt { border-color: #9dc5b5; color: #143b35; }
+			.audio-actions .btn[hidden] { display: none; }
+			.status { min-height: 1.5em; margin-top: 10px !important; }
+			.disclosure { margin: 16px 0 0; padding: 12px 14px; border-left: 4px solid var(--gold); background: #fff8df; color: #473b16; border-radius: 0 8px 8px 0; font-size: .88rem; line-height: 1.6; }
+			.disclosure .en { color: #62562f; }
+			.sample { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 14px; padding: 3px 9px; border-radius: 99px; background: #fff0bd; color: #634900; font-size: .78rem; font-weight: 800; }
+			.empty { margin: 0; padding: 18px 20px; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+			.empty p { margin: 0; }
+			@media (max-width: 640px) {
+				main { padding-top: 20px; }
+				.pulse-heading { align-items: start; }
+				.pulse-body { grid-template-columns: 1fr; }
+				.audio-panel { grid-row: 1; }
+				.part-text { font-size: 1rem; }
+			}
+		</style>
+	</head>
+	<body data-lang="ml">
+		<header>
+			<a class="brand" href="index.html" style="color:inherit;text-decoration:none">
+				<img src="icon.svg" alt="" width="30" height="30" /><b>BhashaBridge</b>
+			</a>
+			<div class="tools">
+				<div class="seg" role="group" aria-label="Language">
+					<button type="button" data-set-lang="ml" aria-pressed="true">മല</button>
+					<button type="button" data-set-lang="both" aria-pressed="false">മല+EN</button>
+					<button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div class="pulse-heading">
+				<div>
+					<p class="eyebrow">BhashaBridge · Parent Pulse</p>
+					<h1><span class="ml">ഈ ആഴ്ചത്തെ പഠനം</span><span class="en">This week's learning</span></h1>
+					<p class="context" id="context" aria-live="polite">സന്ദേശം തയ്യാറാക്കുന്നു…</p>
+				</div>
+				<a class="back" href="index.html"><span class="ml">← പഠനത്തിലേക്ക് മടങ്ങുക</span><span class="en">← Back to learning</span></a>
+			</div>
+			<div id="sample" class="sample" hidden>ഡെമോ ഉദാഹരണം · Demo sample</div>
+			<div class="pulse-body">
+				<section id="content" aria-live="polite">
+					<div class="message" id="message">
+						<article class="message-part"><p class="part-label"><span class="ml">ശക്തമായ ഭാഗം</span><span class="en">Strong point</span></p><p class="part-text" id="strong-text"></p></article>
+						<article class="message-part"><p class="part-label"><span class="ml">കൂടുതൽ പിന്തുണ</span><span class="en">Support</span></p><p class="part-text" id="support-text"></p></article>
+						<article class="message-part"><p class="part-label"><span class="ml">അത്താഴത്തിലെ ചോദ്യം</span><span class="en">Dinner question</span></p><p class="part-text" id="dinner-text"></p></article>
+					</div>
+					<div class="empty" id="empty" hidden><p>ഈ സന്ദേശം തയ്യാറാക്കാൻ കൂടുതൽ പഠന തെളിവുകൾ വേണം. കുട്ടിക്ക് കുറഞ്ഞത് രണ്ട് മേഖലകളിൽ ഉത്തരങ്ങൾ ലഭിച്ച ശേഷം വീണ്ടും നോക്കൂ.</p><p class="en">More learning evidence is needed to prepare this note. Check again after your child has answered in at least two areas.</p></div>
+				</section>
+				<aside class="audio-panel" aria-label="Malayalam audio">
+					<h2><span class="ml">മലയാളത്തിൽ കേൾക്കൂ</span><span class="en">Listen in Malayalam</span></h2>
+					<p><span class="ml">ഈ സന്ദേശം മലയാള ശബ്ദമായി കേൾക്കാം.</span><span class="en">Hear this note spoken in Malayalam.</span></p>
+					<div class="audio-actions">
+						<button type="button" class="btn gold" id="play" aria-label="Play Malayalam audio">▶ <span class="ml">കേൾക്കൂ</span><span class="en">Play</span></button>
+						<button type="button" class="btn alt" id="stop" aria-label="Stop audio" hidden>■</button>
+					</div>
+					<p class="status" id="status" role="status" aria-live="polite"></p>
+				</aside>
+			</div>
+			<p class="disclosure"><span class="ml" lang="ml">മലയാള ശബ്ദം ഉണ്ടാക്കാൻ, ഇവിടെ കാണുന്ന ഈ സന്ദേശം മാത്രമാണ് ശബ്ദസേവനത്തിലേക്ക് അയയ്ക്കുന്നത്. കുട്ടിയുടെ ഉത്തരങ്ങളോ സ്കോറുകളോ അയയ്ക്കില്ല.</span><span class="en" lang="en">To make the Malayalam audio, only the note shown here is sent to the speech service. Your child's answers and scores are not sent.</span></p>
+		</main>
+		<script src="store.js"></script>
+		<script src="rules.js"></script>
+		<script>
+			(() => {
+				const gates = ["understand", "express", "apply"];
+				const demoEvidence = [
+					{ concept: "evap_rate", gate: "understand", result: "pass", confidence: "high" },
+					{ concept: "evap_rate", gate: "understand", result: "fail", confidence: "high" },
+					{ concept: "evap_rate", gate: "understand", result: "pass", confidence: "high" },
+					{ concept: "evap_rate", gate: "express", result: "fail", confidence: "high" },
+					{ concept: "evap_rate", gate: "express", result: "fail", confidence: "high" },
+					{ concept: "evap_rate", gate: "express", result: "pass", confidence: "high" },
+					{ concept: "evap_rate", gate: "apply", result: "pass", confidence: "high" },
+					{ concept: "evap_rate", gate: "apply", result: "pass", confidence: "high" },
+					{ concept: "evap_rate", gate: "apply", result: "pass", confidence: "high" },
+					{ concept: "evap_rate", gate: "apply", result: "pass", confidence: "high" },
+				];
+				const params = new URLSearchParams(location.search);
+				const childId = params.get("child") || "S01";
+				const langButtons = [...document.querySelectorAll("[data-set-lang]")];
+				const $ = (id) => document.getElementById(id);
+				let messageText = "";
+				let demoText = "";
+				let currentAudio;
 
-      <div class="pulse-card">
-        <span
-          style="
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--brand);
-            text-transform: uppercase;
-          "
-        >
-          30-Second Audio Pulse
-        </span>
+				function evidenceFor(id) {
+					try { return window.loadEvidence ? loadEvidence(id) : JSON.parse(localStorage.getItem("bb_evidence_" + id) || "[]"); }
+					catch { return []; }
+				}
 
-        <div style="margin-top: 12px">
-          <span class="ml" id="pulseMl"
-            >നമസ്കാരം. ഈ ആഴ്ചത്തെ കുട്ടിയുടെ പഠനത്തെക്കുറിച്ച് ഒരു ചെറിയ കാര്യം.
-            ബാഷ്പീകരണത്തെക്കുറിച്ച് കുട്ടി സ്വന്തം വാക്കുകളിൽ നന്നായി
-            വിശദീകരിക്കുന്നു.</span
-          >
-          <span class="en" id="pulseEn"
-            >Hello. A short note about your child's learning this week. Your
-            child explains evaporation well in their own words.</span
-          >
-        </div>
+				function mostRecentConcept(evidence, concepts) {
+					const known = new Set(concepts.map((item) => item.id));
+					return evidence
+						.filter((item) => known.has(item.concept))
+						.sort((a, b) => (b.ts || 0) - (a.ts || 0))[0]?.concept || null;
+				}
 
-        <div class="audio-player">
-          <button class="play-btn" id="playBtn" onclick="playAudio()">▶</button>
-          <div>
-            <b style="display: block; font-size: 0.95rem"
-              >കേൾക്കൂ (Listen Audio)</b
-            >
-            <span style="font-size: 0.85rem; color: var(--muted)" id="childSub"
-              >Child S01 · Evaporation, Class 7</span
-            >
-          </div>
-        </div>
-      </div>
+				function buildMessage(pack, evidence, conceptId, isDemo) {
+					const concept = pack.concepts.find((item) => item.id === conceptId);
+					if (!concept || !pack.dinner_questions[conceptId]) return null;
+					const localEvidence = evidence.filter((item) => item.concept === conceptId);
+					if (!isDemo && new Set(localEvidence.map((item) => item.gate)).size < 2) return null;
+					const states = gates.map((gate) => ({ gate, ...gateState(evidence, conceptId, gate) }));
+					const strongest = [...states].sort((a, b) => b.estimate - a.estimate || gates.indexOf(a.gate) - gates.indexOf(b.gate))[0];
+					const weakest = [...states].sort((a, b) => a.estimate - b.estimate || gates.indexOf(b.gate) - gates.indexOf(a.gate))[0];
+					return [
+						pack.pulse.strong[strongest.gate],
+						pack.pulse.support[weakest.gate],
+						pack.dinner_questions[conceptId],
+					];
+				}
 
-      <div class="section-title">
-        ഭക്ഷണ സമയത്ത് ചോദിക്കാം (Tonight at Dinner)
-      </div>
-      <div class="dinner-card">
-        <b>ഒറ്റ ചോദ്യം (One Question):</b>
-        <span class="ml" id="dinnerMl"
-          >മഴ കഴിഞ്ഞ് മുറ്റത്തെ നനഞ്ഞ തറ ഉണങ്ങുമ്പോൾ ആ വെള്ളം എവിടെ പോകുന്നു
-          എന്ന് ചോദിക്കൂ.</span
-        >
-        <span class="en" id="dinnerEn"
-          >Ask where the water from the wet yard goes when it dries after
-          rain.</span
-        >
-      </div>
+				function setLanguage(lang) {
+					document.body.dataset.lang = lang;
+					document.documentElement.lang = lang === "en" ? "en" : "ml";
+					langButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.setLang === lang)));
+					localStorage.setItem("bb_lang", lang);
+				}
 
-      <p class="note">
-        🔒 Opt-in privacy: No scores or grades are sent to parents, only
-        practical ways to connect at home.
-      </p>
-    </main>
+				async function render() {
+					try {
+						const pack = await (await fetch("pack.json")).json();
+						const saved = evidenceFor(childId);
+						const isDemo = saved.length === 0;
+						const conceptId = isDemo ? "evap_rate" : (mostRecentConcept(saved, pack.concepts) || "evap_rate");
+						const parts = buildMessage(pack, isDemo ? demoEvidence : saved, conceptId, isDemo);
+						$("context").textContent = isDemo ? "സാമ്പിൾ സന്ദേശം · Sample message" : pack.concepts.find((item) => item.id === conceptId)?.title?.ml || "";
+						$("sample").hidden = !isDemo;
+						if (!parts) {
+							$("message").hidden = true;
+							$("empty").hidden = false;
+							$("play").disabled = true;
+							return;
+						}
+						$("message").hidden = false;
+						$("empty").hidden = true;
+						$("play").disabled = false;
+						const ids = ["strong-text", "support-text", "dinner-text"];
+						parts.forEach((part, index) => {
+							const target = $(ids[index]);
+							target.replaceChildren();
+							const ml = document.createElement("span");
+							ml.className = "ml";
+							ml.lang = "ml";
+							ml.textContent = part.ml;
+							const en = document.createElement("span");
+							en.className = "en";
+							en.lang = "en";
+							en.textContent = part.en;
+							target.append(ml, en);
+						});
+						messageText = parts.map((part) => part.ml).join(" ");
+						demoText = [pack.pulse.strong.apply.ml, pack.pulse.support.express.ml, pack.dinner_questions.evap_rate.ml].join(" ");
+					} catch {
+						$("context").textContent = "സന്ദേശം ലോഡ് ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കൂ. · Could not load the note. Please try again.";
+						$("play").disabled = true;
+					}
+				}
 
-    <script>
-      // Self-contained logic with zero external dependencies to prevent blank screen crashes
-      const CHILD_ID =
-        new URLSearchParams(location.search).get("child") || "S01";
-      document.getElementById("childSub").textContent =
-        `Child ${CHILD_ID} · Evaporation, Class 7`;
+				async function playMessage() {
+					if (!messageText) return;
+					const playButton = $("play");
+					if (currentAudio) {
+						currentAudio.pause();
+						currentAudio.currentTime = 0;
+					}
+					playButton.disabled = true;
+					$("status").textContent = "ശബ്ദം തയ്യാറാക്കുന്നു…";
+					try {
+						const response = await fetch("/api/tts", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ text: messageText }),
+						});
+						const data = await response.json();
+						if (!data.audioBase64) throw new Error("TTS unavailable");
+						currentAudio = new Audio(`data:${data.mimeType || "audio/wav"};base64,${data.audioBase64}`);
+						await currentAudio.play();
+						$("status").textContent = "കേൾക്കുന്നു…";
+						$("stop").hidden = false;
+						currentAudio.onended = () => { $("status").textContent = ""; $("stop").hidden = true; };
+					} catch {
+						if (messageText !== demoText) {
+							$("status").textContent = "ശബ്ദം ലഭ്യമല്ല. ഇന്റർനെറ്റ് പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കൂ. · Audio unavailable. Check your connection and try again.";
+							playButton.disabled = false;
+							return;
+						}
+						try {
+							currentAudio = new Audio("audio/pulse_demo.wav");
+							await currentAudio.play();
+							$("status").textContent = "ഡെമോ ശബ്ദം · Demo backup audio";
+							$("stop").hidden = false;
+							currentAudio.onended = () => { $("status").textContent = ""; $("stop").hidden = true; };
+						} catch {
+							$("status").textContent = "ശബ്ദം ലഭ്യമല്ല. ഇന്റർനെറ്റ് പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കൂ. · Audio unavailable. Check your connection and try again.";
+						}
+					} finally {
+						playButton.disabled = false;
+					}
+				}
 
-      function playAudio() {
-        const text = document.getElementById("pulseMl").textContent;
-        if ("speechSynthesis" in window) {
-          window.speechSynthesis.cancel();
-          const msg = new SpeechSynthesisUtterance(text);
-          msg.lang = "ml-IN";
-          window.speechSynthesis.speak(msg);
-        }
-      }
-    </script>
-  </body>
+				$("play").addEventListener("click", playMessage);
+				$("stop").addEventListener("click", () => {
+					currentAudio?.pause();
+					if (currentAudio) currentAudio.currentTime = 0;
+					$("status").textContent = "";
+					$("stop").hidden = true;
+				});
+				langButtons.forEach((button) => button.addEventListener("click", () => setLanguage(button.dataset.setLang)));
+				setLanguage(localStorage.getItem("bb_lang") || "ml");
+				render();
+			})();
+		</script>
+	</body>
 </html>

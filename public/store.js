@@ -13,10 +13,10 @@ function saveEvidence(childId, item) {
     const all = loadEvidence(childId);
     all.push({
       concept: item.concept,
-      gate: item.gate, // 'understand', 'express', or 'apply'
-      result: item.result, // 'pass' or 'fail'
-      confidence: item.confidence, // 'high' (online) or 'low' (offline)
-      source: item.source, // 'online' or 'offline'
+      gate: item.gate,
+      result: item.result,
+      confidence: item.confidence,
+      source: item.source,
       misconception: item.misconception || null,
       ts: item.ts || Date.now(),
     });
@@ -26,20 +26,10 @@ function saveEvidence(childId, item) {
   }
 }
 
-// Helper to clear evidence if needed during testing/demos
 function clearEvidence(childId) {
   try {
     localStorage.removeItem("bb_evidence_" + childId);
   } catch (e) {
     console.error("Failed to clear evidence:", e);
   }
-}
-
-function loadEvidence(childId) {
-  return JSON.parse(localStorage.getItem("bb_evidence_" + childId) || "[]");
-}
-function saveEvidence(childId, item) {
-  const all = loadEvidence(childId);
-  all.push(item);
-  localStorage.setItem("bb_evidence_" + childId, JSON.stringify(all));
 }

@@ -556,6 +556,7 @@
     }
   },
   "pulse": {
+    "demo_audio": "audio/pulse_demo.wav",
     "intro": {
       "ml": "നമസ്കാരം. ഈ ആഴ്ചത്തെ കുട്ടിയുടെ പഠനത്തെക്കുറിച്ച് ഒരു ചെറിയ കാര്യം.",
       "en": "Hello. A short note about your child's learning this week.",

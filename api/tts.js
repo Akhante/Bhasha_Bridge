@@ -4,14 +4,14 @@ module.exports = async function handler(req, res) {
     const r = await fetch('https://api.sarvam.ai/text-to-speech', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'api-subscription-key': process.env.SARVAM_API_KEY },
-      body: JSON.stringify({ text, target_language_code: 'ml-IN', model: process.env.SARVAM_TTS_MODEL })
+      body: JSON.stringify({ text, target_language_code: 'ml-IN', model: process.env.SARVAM_TTS_MODEL, output_audio_codec: 'wav' })
     });
     const data = await r.json();
     if (!data.audios) {
-      return res.status(200).json({ audioBase64: '', error: JSON.stringify(data) });
+      return res.status(200).json({ audioBase64: '', mimeType: 'audio/wav', error: JSON.stringify(data) });
     }
-    res.status(200).json({ audioBase64: data.audios[0] });
+    res.status(200).json({ audioBase64: data.audios[0], mimeType: 'audio/wav' });
   } catch (e) {
-    res.status(200).json({ audioBase64: '', error: String(e) });
+    res.status(200).json({ audioBase64: '', mimeType: 'audio/wav', error: String(e) });
   }
 };
