@@ -62,8 +62,8 @@
     {
       "id": "evap_state",
       "title": {
-        "ml": "വെള്ളം എവിടെ പോകുന്നു?",
-        "en": "Where does the water go?"
+        "ml": "വെള്ളം പുറത്തുവെച്ചാൽ അത് എങ്ങോട്ടാണ് അപ്രത്യക്ഷമാകുന്നത്??",
+        "en": "Where does water disappear when kept out?"
       },
       "correct_description_en": "Says the water changes into water vapour (an invisible gas) and mixes with the air. It does not just disappear and is not just soaked up by the surface.",
       "understand": {
