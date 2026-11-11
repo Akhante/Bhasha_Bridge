@@ -217,9 +217,29 @@
       player.src = p;
       player.play().catch(() => r(false));
     });
-  const listen = (a) =>
-    a
-      ? `<button class="listen" data-audio="${esc(a)}" aria-label="Listen">🔊</button>`
+  const liveCache = {};
+  async function speak(file, text) {
+    if (file && (await play(file))) return;      // pre-made file worked
+    if (!text || text === "...") return;          // nothing real to say yet
+    try {
+      let src = liveCache[text];
+      if (!src) {
+        const r = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        });
+        const d = await r.json();
+        if (!d.audioBase64) return;
+        src = "data:audio/wav;base64," + d.audioBase64;
+        liveCache[text] = src;
+      }
+      await play(src);
+    } catch (e) {}
+  }
+  const listen = (o) =>
+    o && (o.audio || o.ml)
+      ? `<button class="listen" data-audio="${esc(o.audio || "")}" data-text="${esc(o.ml || "")}" aria-label="Listen">🔊</button>`
       : "";
   const confetti = () => {
     const c = $("#confetti");
@@ -425,7 +445,7 @@
       bind && bind(res);
     });
   const qCard = (q) =>
-    `<div class="card q"><p class="big">${bi(q)}</p>${listen(q.audio)}</div>`;
+    `<div class="card q"><p class="big">${bi(q)}</p>${listen(q)}</div>`;
   const info = (gate, html) =>
     screen(
       gate,
@@ -442,7 +462,7 @@
     )
   );
   const explainCard = (title, o) =>
-    `<div class="card q"><h2 style="margin:0 0 6px;font-size:1.1rem">${bi(title)}</h2><p class="big">${bi(o)}</p>${listen(o.audio)}</div>`;
+    `<div class="card q"><h2 style="margin:0 0 6px;font-size:1.1rem">${bi(title)}</h2><p class="big">${bi(o)}</p>${listen(o)}</div>`;
 
   const askOpen = (gate, q, lc) =>
     screen(gate, "", (res) => {
@@ -500,7 +520,7 @@
             $("#s-gate").innerHTML =
               stepper(gate) +
               qCard(q) +
-              `<div class="card"><p class="quote">“${esc(text)}”</p><p class="note">${bi(u("readback_question"))}</p>${listen(u("readback_question").audio)}</div>
+              `<div class="card"><p class="quote">“${esc(text)}”</p><p class="note">${bi(u("readback_question"))}</p>${listen(u("readback_question"))}</div>
           <button id="yes" class="btn">${bi(u("yes"))}</button><button id="no" class="btn alt">${bi(u("no_again"))}</button>`;
             play(u("readback_question").audio);
             $("#yes").onclick = () => res({ text, input: "voice" });
@@ -515,7 +535,7 @@
   const askChoice = (gate, head, opts) =>
     screen(
       gate,
-      `${qCard(head)}<div class="opts">${opts.map((o, i) => `<div class="opt"><button class="pick" data-i="${i}">${bi(o)}</button>${listen(o.audio)}</div>`).join("")}</div><button id="go" class="btn" disabled>${bi(u("done"))}</button>`,
+      `${qCard(head)}<div class="opts">${opts.map((o, i) => `<div class="opt"><button class="pick" data-i="${i}">${bi(o)}</button>${listen(o)}</div>`).join("")}</div><button id="go" class="btn" disabled>${bi(u("done"))}</button>`,
       (res) => {
         let sel = -1;
         $$(".pick").forEach(
@@ -662,7 +682,7 @@
       );
       await info(
         "express",
-        `<h1>${bi(u("vocab_bridge_title"))}</h1><div class="pairs">${E.vocab_bridge.map((v) => `<div class="card"><b lang="ml">${esc(v.ml)}</b><b lang="en">${esc(v.en)}</b>${listen(v.audio)}</div>`).join("")}</div>`,
+        `<h1>${bi(u("vocab_bridge_title"))}</h1><div class="pairs">${E.vocab_bridge.map((v) => `<div class="card"><b lang="ml">${esc(v.ml)}</b><b lang="en">${esc(v.en)}</b>${listen(v)}</div>`).join("")}</div>`,
       );
     }
   }
@@ -762,7 +782,7 @@
     if (!t) return;
     if (t.dataset.lang) setLang(t.dataset.lang);
     else if (t.id === "gear") viewSettings();
-    else if (t.classList.contains("listen")) play(t.dataset.audio);
+    else if (t.classList.contains("listen")) speak(t.dataset.audio, t.dataset.text);
     else if (t.dataset.kid) viewPin(S.kids.find((k) => k.id === t.dataset.kid));
     else if (t.dataset.go) startSession(t.dataset.go);
     else if (t.dataset.act) acts[t.dataset.act]?.();
