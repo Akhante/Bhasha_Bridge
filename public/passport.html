@@ -1,203 +1,144 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-		<meta name="theme-color" content="#174a40" />
-		<title>Learning Passport · BhashaBridge</title>
-		<link rel="icon" href="icon.svg" type="image/svg+xml" />
-		<style>
-			:root {
-				--bg: #f3f6f1;
-				--ink: #173c36;
-				--muted: #62756f;
-				--line: #dce5dd;
-				--card: #fff;
-				--green: #237b5c;
-				--gold: #a87315;
-				--coral: #b94e35;
-				--track: #e2e8e1;
-				--blue: #3e7184;
-			}
-			* { box-sizing: border-box; }
-			body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 "Aptos", "Segoe UI", sans-serif; }
-			header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px max(20px, calc((100vw - 850px) / 2)); background: #174a40; color: #fff; }
-			.brand { display: flex; align-items: center; gap: 10px; font-weight: 750; text-decoration: none; }
-			.brand img { width: 30px; height: 30px; }
-			.home { color: #e2eee6; font-size: .9rem; text-decoration-thickness: 1px; text-underline-offset: 4px; }
-			main { width: min(100% - 36px, 850px); margin: 0 auto; padding: 38px 0 56px; }
-			.eyebrow { margin: 0 0 5px; color: var(--green); font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-			h1, h2, p { margin-top: 0; }
-			h1 { margin-bottom: 5px; font: 500 2rem/1.2 Georgia, "Times New Roman", serif; }
-			.subtitle { margin-bottom: 26px; color: var(--muted); }
-			.progress-section { padding: 20px 24px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
-			.section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px; }
-			.section-heading h2 { margin: 0; font-size: 1.05rem; }
-			.concept { color: var(--muted); font-size: .84rem; text-align: right; }
-			.strand { padding: 17px 0; border-top: 1px solid var(--line); }
-			.strand:first-child { border-top: 0; }
-			.strand-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-			.strand-name { font-weight: 750; }
-			.label { color: var(--muted); font-size: .82rem; font-weight: 700; }
-			.label.strong { color: var(--green); }
-			.label.developing { color: var(--gold); }
-			.label.support { color: var(--coral); }
-			.bar { height: 10px; margin: 10px 0 7px; overflow: hidden; border-radius: 8px; background: var(--track); }
-			.fill { height: 100%; border-radius: inherit; background: var(--green); transition: width 450ms ease; }
-			.fill.developing { background: #d19a32; }
-			.fill.support { background: #c76146; }
-			.strand-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: var(--muted); font-size: .82rem; }
-			.offline { color: var(--blue); }
-			.next { display: grid; grid-template-columns: 38px 1fr; gap: 13px; align-items: start; margin-top: 20px; padding: 19px 22px; background: #174a40; color: #fff; border-radius: 10px; }
-			.next-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid #8cc4a5; border-radius: 50%; color: #bce3c8; font-size: 1.1rem; }
-			.next h2 { margin: 0 0 4px; font-size: .78rem; letter-spacing: .06em; }
-			.next p { margin: 0; color: #e5f1e8; font: 1.08rem/1.45 Georgia, "Times New Roman", serif; }
-			.empty { margin: 8px 0 4px; color: var(--muted); }
-			.error { color: var(--coral); }
-			@media (max-width: 520px) {
-				header { padding-inline: 16px; }
-				main { width: min(100% - 28px, 850px); padding-top: 27px; }
-				h1 { font-size: 1.75rem; }
-				.progress-section { padding: 17px 16px; }
-				.section-heading { align-items: start; flex-direction: column; }
-				.concept { text-align: left; }
-				.strand-head { align-items: start; flex-direction: column; gap: 2px; }
-				.strand-foot { align-items: start; flex-direction: column; gap: 2px; }
-			}
-			@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
-		</style>
-	</head>
-	<body>
-		<header>
-			<a class="brand" href="index.html"><img src="icon.svg" alt="" /><span>BhashaBridge</span></a>
-			<a class="home" href="index.html">Back to learning</a>
-		</header>
-		<main>
-			<p class="eyebrow">Learning record</p>
-			<h1 id="title">Learning Passport</h1>
-			<p class="subtitle" id="subtitle" aria-live="polite">Loading progress…</p>
-			<section class="progress-section" aria-labelledby="progress-title">
-				<div class="section-heading">
-					<h2 id="progress-title">Progress across three strands</h2>
-					<span id="concept" class="concept"></span>
-				</div>
-				<div id="strands" aria-live="polite"></div>
-			</section>
-			<section class="next" aria-live="polite">
-				<span class="next-mark" aria-hidden="true">↗</span>
-				<div><h2>NEXT ACTIVITY</h2><p id="nextText"></p></div>
-			</section>
-		</main>
-		<script src="store.js"></script>
-		<script src="rules.js"></script>
-		<script>
-			(() => {
-				const childId = new URLSearchParams(location.search).get("child") || "S01";
-				const strands = [
-					{ gate: "understand", name: "Understand" },
-					{ gate: "express", name: "Express" },
-					{ gate: "apply", name: "Apply" },
-				];
-				const byId = id => document.getElementById(id);
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Passport</title>
+<style>
+  :root { --ink:#12302d; --muted:#4d6662; --bg:#eef3f1; --paper:#fff; --green:#1f6f5c; --gold:#e8ad2b; --line:#c9d8d3; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:20px 16px 40px; background:var(--bg); color:var(--ink);
+         font-family:'Noto Sans Malayalam','Manjari','Nirmala UI',system-ui,sans-serif; font-size:18px; line-height:1.6; }
+  main { max-width:560px; margin:0 auto; }
+  a.back { color:var(--green); font-size:16px; }
+  h1 { font-size:26px; margin:16px 0 4px; }
+  .sub { color:var(--muted); margin:0 0 20px; font-size:16px; }
+  .strands { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .strand { background:var(--paper); border:2px solid var(--line); padding:14px 18px; }
+  .row { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .gate { font-size:20px; font-weight:700; }
+  .gate small { font-weight:400; color:var(--muted); font-size:15px; margin-left:6px; }
+  .label { font-weight:600; text-transform:capitalize; }
+  .meta { color:var(--muted); font-size:15px; margin:2px 0 8px; }
+  .track { height:18px; background:#e3ebe8; }
+  .fill { height:100%; background:var(--green); }
+  .strand[data-label="developing"] .fill { background:#5a9a8a; }
+  .strand[data-label="needs support"] .fill { background:var(--gold); }
+  .strand[data-label="not enough evidence yet"] .fill { background:#9fb3ae; }
+  .flag { margin:8px 0 0; font-size:15px; color:#7a5200; background:#fdf3d8; padding:4px 10px; display:inline-block; }
+  #offline-note { color:var(--muted); font-size:15px; margin:14px 0 0; }
+  .next { border-left:6px solid var(--gold); background:var(--paper); padding:12px 16px; margin-top:20px; }
+  .next .tag { display:block; color:var(--muted); font-size:14px; }
+  .next p { margin:0; font-size:20px; }
+  .next .ml { margin-top:4px; }
+  #empty { background:var(--paper); border:2px dashed var(--line); padding:20px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">&larr; Back</a>
+  <h1>My Learning Passport</h1>
+  <p class="sub" id="topic"></p>
 
-				function evidenceForChild() {
-					const evidence = loadEvidence(childId);
-					return Array.isArray(evidence) ? evidence : [];
-				}
+  <div id="empty" hidden></div>
 
-				function labelClass(label) {
-					if (label === "strong") return "strong";
-					if (label === "developing") return "developing";
-					if (label === "needs support") return "support";
-					return "none";
-				}
+  <section id="passport" hidden>
+    <ol class="strands" id="strands"></ol>
+    <p id="offline-note" hidden>Answers gathered offline count for less, because they were checked with a tap instead of the AI.</p>
+    <div class="next">
+      <span class="tag">Next 15 minutes</span>
+      <p id="next-en"></p>
+      <p class="ml" id="next-ml"></p>
+    </div>
+  </section>
+</main>
 
-				function renderStrand(strand, conceptEvidence, conceptId) {
-					const state = gateState(conceptEvidence, conceptId, strand.gate);
-					const tone = labelClass(state.label);
-					const offline = conceptEvidence.filter(item =>
-						item.gate === strand.gate && (item.confidence === "low" || item.source === "offline")
-					).length;
-					const percent = state.n ? Math.round(state.estimate * 100) : 0;
-					const article = document.createElement("article");
-					article.className = "strand";
+<script src="store.js"></script>
+<script src="rules.js"></script>
+<script src="message.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const sample = params.get('sample') === '1';   // fake evidence for demos
+const $ = id => document.getElementById(id);
+function showEmpty(msg) { $('empty').textContent = msg; $('empty').hidden = false; }
 
-					const head = document.createElement("div");
-					head.className = "strand-head";
-					const name = document.createElement("span");
-					name.className = "strand-name";
-					name.textContent = strand.name;
-					const label = document.createElement("span");
-					label.className = `label ${tone}`;
-					label.textContent = state.label;
-					head.append(name, label);
+// Malayalam names are a convenience. P1's reviewer should check them.
+const GATE_NAMES = {
+  understand: { en: 'Understand', ml: 'മനസ്സിലാക്കൽ' },
+  express: { en: 'Express', ml: 'പറയൽ' },
+  apply: { en: 'Apply', ml: 'പ്രയോഗം' }
+};
 
-					const bar = document.createElement("div");
-					bar.className = "bar";
-					bar.setAttribute("role", "img");
-					bar.setAttribute("aria-label", `${strand.name}: ${state.label}, ${state.n} evidence items`);
-					const fill = document.createElement("div");
-					fill.className = `fill ${tone}`;
-					fill.style.width = `${percent}%`;
-					bar.append(fill);
+function strandItem(s) {
+  const li = document.createElement('li');
+  li.className = 'strand';
+  li.dataset.label = s.label;
 
-					const foot = document.createElement("div");
-					foot.className = "strand-foot";
-					const count = document.createElement("span");
-					count.textContent = `n = ${state.n} ${state.n === 1 ? "answer" : "answers"}`;
-					foot.append(count);
-					if (offline) {
-						const flag = document.createElement("span");
-						flag.className = "offline";
-						flag.textContent = `${offline} offline ${offline === 1 ? "answer" : "answers"} · lower confidence`;
-						foot.append(flag);
-					}
-					article.append(head, bar, foot);
-					return { element: article, estimate: state.estimate, n: state.n, strand };
-				}
+  const row = document.createElement('div'); row.className = 'row';
+  const gate = document.createElement('span'); gate.className = 'gate';
+  gate.textContent = GATE_NAMES[s.gate].en;
+  const ml = document.createElement('small'); ml.textContent = GATE_NAMES[s.gate].ml;
+  gate.appendChild(ml);
+  const label = document.createElement('span'); label.className = 'label'; label.textContent = s.label;
+  row.append(gate, label);
 
-				async function render() {
-					const [allEvidence, response] = await Promise.all([
-						Promise.resolve(evidenceForChild()),
-						fetch("pack.json"),
-					]);
-					if (!response.ok) throw new Error("Learning content could not be loaded.");
-					const pack = await response.json();
-					const conceptIds = new Set(pack.concepts.map(concept => concept.id));
-					const latest = [...allEvidence]
-						.filter(item => conceptIds.has(item.concept))
-						.sort((a, b) => (b.ts || 0) - (a.ts || 0))[0];
-					const concept = pack.concepts.find(item => item.id === latest?.concept) || pack.concepts[0];
-					const conceptId = concept?.id;
-					const localChildren = JSON.parse(localStorage.getItem("bb_children") || "[]");
-					const child = Array.isArray(localChildren) ? localChildren.find(item => item.id === childId) : null;
-					const childName = child?.nick || `Child ${childId}`;
-					const conceptEvidence = allEvidence.filter(item => item.concept === conceptId);
+  const meta = document.createElement('p'); meta.className = 'meta';
+  meta.textContent = s.n + (s.n === 1 ? ' answer so far' : ' answers so far');
 
-					byId("title").textContent = `${childName}'s Learning Passport`;
-					byId("subtitle").textContent = conceptEvidence.length
-						? "A snapshot of learning from recent practice."
-						: "No learning evidence recorded for this child yet.";
-					byId("concept").textContent = concept?.title?.en || pack.chapter || "";
+  const track = document.createElement('div'); track.className = 'track';
+  track.setAttribute('role', 'img');
+  track.setAttribute('aria-label', GATE_NAMES[s.gate].en + ': ' + s.label);
+  const fill = document.createElement('div'); fill.className = 'fill';
+  fill.style.width = (s.n > 0 ? Math.round(s.estimate * 100) : 0) + '%';
+  track.appendChild(fill);
 
-					const ranked = strands
-						.map(strand => renderStrand(strand, conceptEvidence, conceptId))
-						.sort((a, b) => {
-							const aReady = a.n >= 3 ? 1 : 0;
-							const bReady = b.n >= 3 ? 1 : 0;
-							return bReady - aReady || b.estimate - a.estimate || strands.indexOf(a.strand) - strands.indexOf(b.strand);
-						});
-					byId("strands").replaceChildren(...ranked.map(item => item.element));
-					byId("nextText").textContent = nextActivity(allEvidence, conceptId).text;
-				}
+  li.append(row, meta, track);
 
-				render().catch(error => {
-					byId("subtitle").textContent = "Could not load learning progress.";
-					byId("strands").textContent = error.message || "Please reload this page and try again.";
-					byId("strands").className = "empty error";
-					byId("nextText").textContent = "";
-				});
-			})();
-		</script>
-	</body>
+  if (s.offline > 0) {   // flag lower-confidence evidence
+    const flag = document.createElement('p'); flag.className = 'flag';
+    flag.textContent = 'Includes ' + s.offline + ' offline ' + (s.offline === 1 ? 'answer' : 'answers') + ' (lower confidence)';
+    li.appendChild(flag);
+  }
+  return li;
+}
+
+async function init() {
+  let pack = {};
+  try { pack = await (await fetch('pack.json')).json(); } catch (e) { /* the passport still works without it */ }
+
+  // ASSUMPTION: the app stores the chosen child in localStorage under 'bb_current_child'.
+  const childId = params.get('child') || localStorage.getItem('bb_current_child');
+  if (!childId && !sample) { showEmpty('Pick a child in the app first, then open this page.'); return; }
+
+  const firstConcept = pack.concepts && pack.concepts[0] && pack.concepts[0].id;
+  let conceptId = params.get('concept'), evidence;
+  if (sample) {
+    conceptId = conceptId || firstConcept || 'evap_rate';
+    evidence = BB_pulse.sampleEvidence(conceptId).concat([   // two offline answers, to show the flag
+      { concept: conceptId, gate: 'express', result: 'fail', confidence: 'low', source: 'offline', ts: Date.now() },
+      { concept: conceptId, gate: 'express', result: 'pass', confidence: 'low', source: 'offline', ts: Date.now() }
+    ]);
+  } else {
+    evidence = loadEvidence(childId);
+    conceptId = conceptId || (evidence.length ? evidence[evidence.length - 1].concept : firstConcept);
+  }
+
+  const data = BB_pulse.buildPassport(evidence, conceptId);
+  if (!data.ok) { showEmpty('No evidence yet. Finish a session and your passport will fill in.'); return; }
+
+  const concept = (pack.concepts || []).find(c => c.id === conceptId);
+  $('topic').textContent = (pack.chapter || '') + (concept ? ': ' + concept.title.en : '') + (sample ? ' (sample data)' : '');
+
+  data.strands.forEach(s => $('strands').appendChild(strandItem(s)));   // strengths first
+  $('offline-note').hidden = data.offlineTotal === 0;
+
+  // Next activity: English from rules.js; Malayalam from pack.next_activity if P1 has added it.
+  $('next-en').textContent = data.next.text;
+  const na = pack.next_activity && pack.next_activity[data.next.gate];
+  $('next-ml').textContent = na ? (typeof na === 'object' ? na.ml : na) : '';
+  $('passport').hidden = false;
+}
+init();
+</script>
+</body>
 </html>
