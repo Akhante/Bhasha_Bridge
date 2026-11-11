@@ -221,6 +221,20 @@
     a
       ? `<button class="listen" data-audio="${esc(a)}" aria-label="Listen">🔊</button>`
       : "";
+  const confetti = () => {
+    const c = $("#confetti");
+    if (!c) return;
+    const col = ["#ffb400", "#ff7a45", "#2f8f6b", "#d6336c"];
+    c.innerHTML = Array.from(
+      { length: 34 },
+      () =>
+        `<i style="left:${Math.random() * 100}%;background:${col[(Math.random() * 4) | 0]};--dx:${Math.random() * 120 - 60}px;animation-delay:${Math.random() * 0.4}s"></i>`,
+    ).join("");
+    setTimeout(() => {
+      c.innerHTML = "";
+    }, 2600);
+    navigator.vibrate?.(40);
+  };
   const show = (id) => {
     clearInterval(S.tick);
     player.pause();
@@ -420,11 +434,13 @@
         $("#go").onclick = () => r();
       },
     );
-  const cheer = (gate, extra = "") =>
+  const cheer = (gate, extra = "") => (
+    confetti(),
     info(
       gate,
       `<div class="card"><p class="win">🎉</p><p class="big center">${bi(u("well_done"))}</p>${extra}</div>`,
-    );
+    )
+  );
   const explainCard = (title, o) =>
     `<div class="card q"><h2 style="margin:0 0 6px;font-size:1.1rem">${bi(title)}</h2><p class="big">${bi(o)}</p>${listen(o.audio)}</div>`;
 
@@ -494,6 +510,7 @@
         };
       };
       draw();
+      play(q.audio);
     });
   const askChoice = (gate, head, opts) =>
     screen(
@@ -515,6 +532,7 @@
 
   /* ---- session ---- */
   function rec(gate, pass, x = {}) {
+    if (!pass) navigator.vibrate?.(60);
     ev.save(
       S.kid.id,
       Object.assign(
@@ -539,9 +557,7 @@
       `<div class="card think"><i></i><i></i><i></i><p>${bi(u("thinking"))}</p></div>`;
     try {
       const r = await Promise.race([
-        W.classifyAnswer(c.id, text, labels, {
-          correctDescription: c.correct_description_en,
-        }),
+        W.classifyAnswer(c.id, text, labels, c.correct_description_en),
         new Promise((_, j) => setTimeout(j, 15000)),
       ]);
       const ok = new Set([
@@ -696,7 +712,7 @@
       `<p class="win">🌼</p><h1 class="center">${bi(u("session_done"))}</h1>
     <div class="card"><b>${bi(u("today"))}</b><ul class="sum">${GATES.map((g) => `<li><span>${bi(u("gate_" + g))}</span><span>${icon[S.sess.res[g]] || "–"}</span></li>`).join("")}</ul>${S.sess.low ? `<p class="note" style="margin-top:8px">${bi(u("low_note"))}</p>` : ""}</div>
     <div class="card"><b>${bi(u("your_next_15"))}</b><p class="big"><span class="ml" lang="ml">${esc(NEXT_ML[na.gate])}</span><span class="en" lang="en">${esc(na.text)}</span></p></div>
-    <a class="btn gold" style="text-decoration:none;text-align:center;padding-top:12px" href="passport.html?child=${S.kid.id}">${bi(u("see_passport"))}</a>
+    <a class="btn gold" style="text-decoration:none;text-align:center;padding-top:12px" href="passport.html?child=${S.kid.id}&amp;concept=${c.id}">${bi(u("see_passport"))}</a>
     <button class="btn alt" data-act="home">${bi(u("home"))}</button>`;
     show("s-end");
   }
@@ -708,6 +724,7 @@
       ready = s && s.core === s.coreTotal;
     modal(`<h1>${bi(u("settings"))}</h1><div class="card"><b>${bi(u("offline_ready"))}</b> ${ready ? "✓" : ""}<p class="note">${st}</p></div>
     ${S.install ? `<button class="btn" data-m="inst">${bi(u("install_app"))}</button>` : ""}
+    <a class="btn alt" href="digest.html" style="text-decoration:none;text-align:center;padding-top:14px">${bi({ ml: "അധ്യാപക ഡൈജസ്റ്റ്", en: "Teacher Digest" })}</a>
     <button class="btn alt" data-m="reset">${bi(u("reset_all"))}</button><button class="btn alt" data-m="close">${bi(u("ok"))}</button>`);
     navigator.serviceWorker?.controller?.postMessage({ type: "STATUS" });
     $("[data-m=close]").onclick = closeModal;
@@ -769,6 +786,14 @@
     });
   }
 
+  addEventListener("popstate", () => {
+    history.pushState({}, "");
+    if (!$("#modal").hidden) closeModal();
+    else if (S.sess && !$("#s-gate").hidden) acts.leave();
+    else if (S.kid && !$("#s-home").hidden) viewKids();
+    else if (S.kid) viewHome();
+  });
+
   /* ---- boot ---- */
   (async function boot() {
     setLang(localStorage.getItem("bb_lang") || "ml");
@@ -785,7 +810,8 @@
         `<h1>${bi(u("load_error"))}</h1><button class="btn" onclick="location.reload()">${bi(u("try_again"))}</button>`;
       return show("s-error");
     }
-    W.BB = { S, ev }; /* handy for the console and for teammates */
+    W.BB = { S, ev };
+    history.pushState({}, ""); /* handy for the console and for teammates */
     viewKids();
   })();
 })();

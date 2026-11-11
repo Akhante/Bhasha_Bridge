@@ -8,11 +8,20 @@
     />
     <title>BhashaBridge · ഭാഷാ ബ്രിഡ്ജ്</title>
     <meta name="theme-color" content="#0f4c4a" />
+    <meta name="color-scheme" content="light" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="preload" href="pack.json" as="fetch" crossorigin />
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body data-lang="ml">
+    <a class="skip" href="#main">Skip to content</a>
     <header id="top">
       <div class="brand">
         <img src="icon.svg" alt="" width="30" height="30" /><b>BhashaBridge</b>
@@ -27,7 +36,7 @@
         <button id="gear" class="ico" aria-label="Settings">⚙</button>
       </div>
     </header>
-    <main>
+    <main id="main">
       <section id="s-kids" class="screen" hidden></section>
       <section id="s-create" class="screen" hidden></section>
       <section id="s-pin" class="screen" hidden></section>
@@ -37,6 +46,12 @@
       <section id="s-error" class="screen" hidden></section>
       <p id="boot" class="boot">…</p>
     </main>
+    <noscript
+      ><p style="padding: 20px; text-align: center">
+        Please turn on JavaScript to use BhashaBridge.
+      </p></noscript
+    >
+    <div id="confetti" class="confetti" aria-hidden="true"></div>
     <div id="modal" class="modal" hidden></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="store.js"></script>

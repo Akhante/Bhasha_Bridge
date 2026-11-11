@@ -1,5 +1,5 @@
 /* BhashaBridge service worker. Bump V on every deploy so phones pick up the new files. */
-const V = "bb-v2";
+const V = "bb-v3";
 const CORE = [
   "index.html",
   "style.css",
@@ -11,6 +11,7 @@ const CORE = [
   "passport.html",
   "pulse.html",
   "digest.html",
+  "sample-class.json",
   "manifest.json",
   "icon.svg",
 ];
