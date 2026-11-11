@@ -1,307 +1,240 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BhashaBridge · Concept Passport</title>
-    <style>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Passport</title>
+  <style>
+    :root {
+      --bg: #f6f9f8;
+      --ink: #14302b;
+      --muted: #5b716c;
+      --track: #dbe6e3;
+      --strong: #1f8a5b;
+      --developing: #e0a100;
+      --support: #d2552f;
+      --none: #8fa19d;
+      --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #f2f7f3;
-        --card: #ffffff;
-        --ink: #102a27;
-        --muted: #53716b;
-        --track: #d2e3de;
-        --strong: #0f766e;
-        --developing: #b45309;
-        --support: #c2410c;
-        --none: #64748b;
+        --bg: #101c1a;
+        --ink: #e8f2ef;
+        --muted: #9db3ae;
+        --track: #2b3d39;
+        --card: #182826;
       }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        padding: 20px 16px 40px;
-        background: var(--bg);
-        color: var(--ink);
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          "Noto Sans Malayalam",
-          sans-serif;
-      }
-      main {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      .header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-      }
-      h1 {
-        font-size: 1.5rem;
-        margin: 0;
-      }
-      .back-btn {
-        text-decoration: none;
-        font-size: 0.9rem;
-        background: var(--track);
-        padding: 6px 12px;
-        border-radius: 8px;
-        color: var(--ink);
-        font-weight: 600;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 16px 40px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Malayalam", sans-serif;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    main { max-width: 560px; margin: 0 auto; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 24px; }
+
+    .strand {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .name { font-size: 1.2rem; font-weight: 700; }
+    .label { font-weight: 700; }
+    .label.strong { color: var(--strong); }
+    .label.developing { color: var(--developing); }
+    .label.support { color: var(--support); }
+    .label.none { color: var(--none); }
+
+    .bar { height: 18px; background: var(--track); border-radius: 9px; margin: 10px 0 8px; overflow: hidden; }
+    .fill { height: 100%; border-radius: 9px; }
+    .fill.strong { background: var(--strong); }
+    .fill.developing { background: var(--developing); }
+    .fill.support { background: var(--support); }
+    .fill.none { background: var(--none); }
+
+    .meta { color: var(--muted); font-size: 0.95rem; }
+    .lowconf {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 2px 10px;
+      border: 2px dashed var(--muted);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .next {
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 14px;
+      padding: 18px 16px;
+      margin-top: 22px;
+    }
+    .next h2 { margin: 0 0 6px; font-size: 1.1rem; }
+    .next p { margin: 0; font-size: 1.15rem; }
+
+    .note { margin-top: 18px; font-size: 0.9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 id="title">Learning Passport</h1>
+    <p class="sub" id="sub"></p>
+
+    <div id="strands"></div>
+
+    <section class="next" aria-live="polite">
+      <h2>Next 15 minutes</h2>
+      <p id="nextText"></p>
+    </section>
+
+    <p class="note" id="note"></p>
+  </main>
+
+  <!-- Same load order as the rest of the app: store.js first, then rules.js -->
+  <script src="store.js"></script>
+  <script src="rules.js"></script>
+  <script>
+    // Child code comes from the link, e.g. passport.html?child=S02
+    const CHILD_ID = new URLSearchParams(location.search).get('child') || 'S01';
+
+    const STRANDS = [
+      { gate: 'understand', name: 'Understand' },
+      { gate: 'express',    name: 'Express' },
+      { gate: 'apply',      name: 'Apply' }
+    ];
+
+    // Turn the label from rules.js into a CSS class
+    function labelClass(label) {
+      if (label === 'strong') return 'strong';
+      if (label === 'developing') return 'developing';
+      if (label === 'needs support') return 'support';
+      return 'none';
+    }
+
+    // Count how many pieces of evidence for this gate came from offline
+    function countOffline(evidence, conceptId, gate) {
+      return evidence.filter(e =>
+        e.concept === conceptId && e.gate === gate && e.confidence === 'low'
+      ).length;
+    }
+
+    async function render() {
+      const evidence = loadEvidence(CHILD_ID);
+      const validEvidence = Array.isArray(evidence) ? evidence : [];
+      const pack = await fetch('pack.json').then(response => {
+        if (!response.ok) throw new Error('Could not load learning pack');
+        return response.json();
+      });
+      const knownConcepts = new Set(pack.concepts.map(concept => concept.id));
+      const latest = validEvidence
+        .filter(item => knownConcepts.has(item.concept))
+        .sort((a, b) => (b.ts || 0) - (a.ts || 0))[0];
+      const conceptId = latest?.concept;
+
+      document.getElementById('sub').textContent = conceptId
+        ? 'Child ' + CHILD_ID + ' · ' + (pack.concepts.find(concept => concept.id === conceptId)?.title?.en || pack.chapter)
+        : 'Child ' + CHILD_ID + ' · No completed session progress yet';
+
+      if (!conceptId) {
+        document.getElementById('strands').textContent = 'Progress will appear here after a 10-minute session.';
+        document.getElementById('nextText').textContent = 'Complete a learning session to get a suggested next activity.';
+        document.getElementById('note').textContent = '';
+        return;
       }
 
-      /* Concept Tabs */
-      .tabs {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 20px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-      }
-      .tab {
-        background: var(--card);
-        border: 2px solid var(--track);
-        padding: 8px 14px;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-        color: var(--muted);
-      }
-      .tab.active {
-        background: var(--strong);
-        color: #fff;
-        border-color: var(--strong);
-      }
+      const conceptEvidence = validEvidence.filter(item => item.concept === conceptId);
 
-      .strand {
-        background: var(--card);
-        border-radius: 14px;
-        padding: 16px;
-        margin-bottom: 14px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-      }
-      .row {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-      }
-      .name {
-        font-size: 1.1rem;
-        font-weight: 700;
-      }
-      .label {
-        font-weight: 700;
-        font-size: 0.95rem;
-        text-transform: uppercase;
-      }
-      .label.strong {
-        color: var(--strong);
-      }
-      .label.developing {
-        color: var(--developing);
-      }
-      .label.support {
-        color: var(--support);
-      }
-      .label.none {
-        color: var(--none);
-      }
+      // Work out each strand using P4's own rules.js
+      const strands = STRANDS.map(s => {
+        const state = gateState(conceptEvidence, conceptId, s.gate);
+        return {
+          name: s.name,
+          gate: s.gate,
+          n: state.n,
+          estimate: state.estimate,
+          label: state.label,
+          offline: countOffline(conceptEvidence, conceptId, s.gate)
+        };
+      });
 
-      .bar {
-        height: 14px;
-        background: var(--track);
-        border-radius: 7px;
-        margin: 10px 0 6px;
-        overflow: hidden;
-      }
-      .fill {
-        height: 100%;
-        border-radius: 7px;
-        transition: width 0.4s ease;
-      }
-      .fill.strong {
-        background: var(--strong);
-      }
-      .fill.developing {
-        background: var(--developing);
-      }
-      .fill.support {
-        background: var(--support);
-      }
-      .fill.none {
-        background: var(--none);
-      }
+      // Strengths first: highest estimate at the top
+      // (strands with too little evidence go to the bottom)
+      strands.sort((a, b) => {
+        const aReady = a.n >= 3 ? 1 : 0;
+        const bReady = b.n >= 3 ? 1 : 0;
+        if (aReady !== bReady) return bReady - aReady;
+        return b.estimate - a.estimate;
+      });
 
-      .meta {
-        color: var(--muted);
-        font-size: 0.9rem;
-        display: flex;
-        justify-content: space-between;
-      }
+      const container = document.getElementById('strands');
+      container.innerHTML = '';
 
-      /* Evidence Accordion */
-      .evidence-toggle {
-        background: none;
-        border: none;
-        color: var(--strong);
-        font-weight: 600;
-        cursor: pointer;
-        padding: 0;
-        margin-top: 8px;
-        font-size: 0.85rem;
-      }
-      .evidence-log {
-        margin-top: 10px;
-        border-top: 1px dashed var(--track);
-        padding-top: 8px;
-        font-size: 0.85rem;
-        display: none;
-      }
-      .evidence-log.open {
-        display: block;
-      }
-      .ev-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 4px 0;
-        border-bottom: 1px solid #f0f4f2;
-      }
+      strands.forEach(s => {
+        const cls = labelClass(s.label);
+        const pct = Math.round(s.estimate * 100);
 
-      .next {
-        background: var(--ink);
-        color: var(--bg);
-        border-radius: 14px;
-        padding: 18px;
-        margin-top: 20px;
-      }
-      .next h2 {
-        margin: 0 0 6px;
-        font-size: 1.05rem;
-      }
-      .next p {
-        margin: 0 0 14px;
-        font-size: 1.1rem;
-      }
-      .action-link {
-        display: inline-block;
-        background: #fff;
-        color: var(--ink);
-        text-decoration: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 0.95rem;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="header-row">
-        <h1 id="title">Learning Passport</h1>
-        <a class="back-btn" href="index.html">← Back to App</a>
-      </div>
-      <p
-        id="sub"
-        style="color: var(--muted); margin-top: 0; margin-bottom: 16px"
-      ></p>
+        const card = document.createElement('div');
+        card.className = 'strand';
 
-      <!-- Concept Switching Tabs -->
-      <div class="tabs" id="conceptTabs"></div>
+        const row = document.createElement('div');
+        row.className = 'row';
+        const name = document.createElement('span');
+        name.className = 'name';
+        name.textContent = s.name;
+        const label = document.createElement('span');
+        label.className = 'label ' + cls;
+        label.textContent = s.label;
+        row.append(name, label);
 
-      <div id="strands"></div>
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.setAttribute('role', 'img');
+        bar.setAttribute('aria-label', s.name + ' progress ' + pct + ' percent');
+        const fill = document.createElement('div');
+        fill.className = 'fill ' + cls;
+        fill.style.width = pct + '%';
+        bar.appendChild(fill);
 
-      <section class="next">
-        <h2>Recommended Next 15 Minutes</h2>
-        <p id="nextText"></p>
-        <a class="action-link" id="practiceLink" href="index.html"
-          >Start Practice Session</a
-        >
-      </section>
-    </main>
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = s.n + (s.n === 1 ? ' answer' : ' answers') + ' so far';
 
-    <script src="store.js"></script>
-    <script src="rules.js"></script>
-    <script>
-      const CHILD_ID =
-        new URLSearchParams(location.search).get("child") || "S01";
-      let currentConcept = "evap_rate";
+        card.append(row, bar, meta);
 
-      function renderPassport() {
-        // Safe fallbacks to prevent runtime crashes
-        const evidence =
-          typeof loadEvidence === "function" ? loadEvidence(CHILD_ID) : [];
-
-        // Fixed string interpolation syntax
-        const subEl = document.getElementById("sub");
-        if (subEl) {
-          subEl.textContent = `Child ID: ${CHILD_ID} · Class 7 Science (SCERT Kerala)`;
+        if (s.offline > 0) {
+          const flag = document.createElement('div');
+          flag.className = 'lowconf';
+          flag.textContent = s.offline + ' of these gathered offline (lower confidence)';
+          card.appendChild(flag);
         }
 
-        const container = document.getElementById("strands");
-        if (!container) return;
-        container.innerHTML = "";
+        container.appendChild(card);
+      });
 
-        STRANDS.forEach((s) => {
-          // Safe fallback if gateState is missing
-          const state =
-            typeof gateState === "function"
-              ? gateState(evidence, currentConcept, s.gate)
-              : { n: 0, estimate: 0, label: "not enough evidence yet" };
+      // End with the next activity from rules.js
+      const next = nextActivity(conceptEvidence, conceptId);
+      document.getElementById('nextText').textContent = next.text;
 
-          const cls = labelClass(state.label);
-          const pct = Math.round(state.estimate * 100);
-          const gateEvidence = evidence.filter(
-            (e) => e.concept === currentConcept && e.gate === s.gate,
-          );
+      const anyOffline = strands.some(s => s.offline > 0);
+      document.getElementById('note').textContent = anyOffline
+        ? 'Answers gathered offline count half as much as online answers.'
+        : '';
+    }
 
-          const card = document.createElement("div");
-          card.className = "strand";
-          card.innerHTML = `
-        <div class="row">
-          <span class="name">${s.name}</span>
-          <span class="label ${cls}">${state.label}</span>
-        </div>
-        <div class="bar"><div class="fill ${cls}" style="width: ${pct}%"></div></div>
-        <div class="meta">
-          <span>${state.n} evidence items (Beta est: ${pct}%)</span>
-          <span>${gateEvidence.filter((e) => e.confidence === "low").length} offline / low-conf</span>
-        </div>
-        ${
-          gateEvidence.length > 0
-            ? `
-          <button class="evidence-toggle" onclick="toggleLog(this)">View Evidence Log (${gateEvidence.length})</button>
-          <div class="evidence-log">
-            ${gateEvidence
-              .map(
-                (e) => `
-              <div class="ev-item">
-                <span>Result: <b>${e.result}</b> (${e.source})</span>
-                <span>${e.misconception ? "Misconception: " + e.misconception : "Correct"}</span>
-              </div>
-            `,
-              )
-              .join("")}
-          </div>
-        `
-            : ""
-        }
-      `;
-          container.appendChild(card);
-        });
-
-        if (typeof nextActivity === "function") {
-          const next = nextActivity(evidence, currentConcept);
-          const nextTextEl = document.getElementById("nextText");
-          if (nextTextEl) nextTextEl.textContent = next.text;
-        }
-      }
-    </script>
-  </body>
+    render().catch(() => {
+      document.getElementById('sub').textContent = 'Could not load learning progress.';
+      document.getElementById('strands').textContent = 'Please check your connection and reload this page.';
+      document.getElementById('nextText').textContent = '';
+    });
+  </script>
+</body>
 </html>
