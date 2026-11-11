@@ -26,6 +26,7 @@
   .strand[data-label="needs support"] .fill { background:var(--gold); }
   .strand[data-label="not enough evidence yet"] .fill { background:#9fb3ae; }
   .flag { margin:8px 0 0; font-size:15px; color:#7a5200; background:#fdf3d8; padding:4px 10px; display:inline-block; }
+  #sample-note[hidden] { display:none; }
   #offline-note { color:var(--muted); font-size:15px; margin:14px 0 0; }
   .next { border-left:6px solid var(--gold); background:var(--paper); padding:12px 16px; margin-top:20px; }
   .next .tag { display:block; color:var(--muted); font-size:14px; }
@@ -37,8 +38,10 @@
 <body>
 <main>
   <a class="back" href="index.html">&larr; Back</a>
+  <a class="back" id="sample-link" href="passport.html?sample=1" style="float:right">View sample passport</a>
   <h1>My Learning Passport</h1>
   <p class="sub" id="topic"></p>
+  <p id="sample-note" class="flag" hidden>Demo only: these are fictional sample answers, not the child's actual record.</p>
 
   <div id="empty" hidden></div>
 
@@ -55,12 +58,63 @@
 
 <script src="store.js"></script>
 <script src="rules.js"></script>
-<script src="message.js"></script>
 <script>
 const params = new URLSearchParams(location.search);
 const sample = params.get('sample') === '1';   // fake evidence for demos
 const $ = id => document.getElementById(id);
 function showEmpty(msg) { $('empty').textContent = msg; $('empty').hidden = false; }
+
+function sampleEvidence(conceptId) {
+  const answers = [
+    ['understand', 'pass', 'high', 'online'],
+    ['understand', 'pass', 'high', 'online'],
+    ['understand', 'fail', 'high', 'online'],
+    ['understand', 'pass', 'high', 'online'],
+    ['express', 'pass', 'high', 'online'],
+    ['express', 'pass', 'high', 'online'],
+    ['express', 'pass', 'high', 'online'],
+    ['express', 'fail', 'low', 'offline'],
+    ['apply', 'pass', 'high', 'online'],
+    ['apply', 'fail', 'high', 'online'],
+    ['apply', 'pass', 'low', 'offline']
+  ];
+  return answers.map(([gate, result, confidence, source], index) => ({
+    concept: conceptId,
+    gate,
+    result,
+    confidence,
+    source,
+    ts: Date.now() - (answers.length - index) * 60000
+  }));
+}
+
+function buildPassport(evidence, conceptId) {
+  const conceptEvidence = evidence.filter(item => item.concept === conceptId);
+  if (!conceptEvidence.length) return { ok: false };
+
+  const data = GATES.map(gate => {
+    const state = gateState(conceptEvidence, conceptId, gate);
+    return {
+      gate,
+      n: state.n,
+      estimate: state.estimate,
+      label: state.label,
+      offline: conceptEvidence.filter(item => item.gate === gate && (item.confidence === 'low' || item.source === 'offline')).length
+    };
+  });
+  data.sort((a, b) => {
+    const aReady = a.n >= 3 ? 1 : 0;
+    const bReady = b.n >= 3 ? 1 : 0;
+    return bReady - aReady || b.estimate - a.estimate || GATES.indexOf(a.gate) - GATES.indexOf(b.gate);
+  });
+
+  return {
+    ok: true,
+    strands: data,
+    offlineTotal: data.reduce((total, strand) => total + strand.offline, 0),
+    next: nextActivity(conceptEvidence, conceptId)
+  };
+}
 
 // Malayalam names are a convenience. P1's reviewer should check them.
 const GATE_NAMES = {
@@ -68,6 +122,7 @@ const GATE_NAMES = {
   express: { en: 'Express', ml: 'പറയൽ' },
   apply: { en: 'Apply', ml: 'പ്രയോഗം' }
 };
+const GATES = ['understand', 'express', 'apply'];
 
 function strandItem(s) {
   const li = document.createElement('li');
@@ -103,31 +158,50 @@ function strandItem(s) {
 }
 
 async function init() {
-  let pack = {};
-  try { pack = await (await fetch('pack.json')).json(); } catch (e) { /* the passport still works without it */ }
+  let pack;
+  try {
+    const response = await fetch('pack.json');
+    if (!response.ok) throw new Error('Learning content could not be loaded.');
+    pack = await response.json();
+  } catch (e) {
+    showEmpty('Learning content could not be loaded. Please reload and try again.');
+    return;
+  }
 
-  // ASSUMPTION: the app stores the chosen child in localStorage under 'bb_current_child'.
-  const childId = params.get('child') || localStorage.getItem('bb_current_child');
+  const childId = params.get('child');
   if (!childId && !sample) { showEmpty('Pick a child in the app first, then open this page.'); return; }
 
-  const firstConcept = pack.concepts && pack.concepts[0] && pack.concepts[0].id;
+  const concepts = Array.isArray(pack.concepts) ? pack.concepts : [];
+  const firstConcept = concepts[0]?.id;
   let conceptId = params.get('concept'), evidence;
   if (sample) {
     conceptId = conceptId || firstConcept || 'evap_rate';
-    evidence = BB_pulse.sampleEvidence(conceptId).concat([   // two offline answers, to show the flag
-      { concept: conceptId, gate: 'express', result: 'fail', confidence: 'low', source: 'offline', ts: Date.now() },
-      { concept: conceptId, gate: 'express', result: 'pass', confidence: 'low', source: 'offline', ts: Date.now() }
-    ]);
+    evidence = sampleEvidence(conceptId);
   } else {
     evidence = loadEvidence(childId);
-    conceptId = conceptId || (evidence.length ? evidence[evidence.length - 1].concept : firstConcept);
+    evidence = Array.isArray(evidence) ? evidence : [];
+    const knownConcepts = new Set(concepts.map(concept => concept.id));
+    const latest = [...evidence]
+      .filter(item => knownConcepts.has(item.concept))
+      .sort((a, b) => (b.ts || 0) - (a.ts || 0))[0];
+    conceptId = conceptId || latest?.concept || firstConcept;
   }
 
-  const data = BB_pulse.buildPassport(evidence, conceptId);
+  const data = buildPassport(evidence, conceptId);
   if (!data.ok) { showEmpty('No evidence yet. Finish a session and your passport will fill in.'); return; }
 
-  const concept = (pack.concepts || []).find(c => c.id === conceptId);
-  $('topic').textContent = (pack.chapter || '') + (concept ? ': ' + concept.title.en : '') + (sample ? ' (sample data)' : '');
+  const concept = concepts.find(c => c.id === conceptId);
+  let childName = sample ? 'Demo learner' : `Child ${childId}`;
+  if (childId) {
+    try {
+      const children = JSON.parse(localStorage.getItem('bb_children') || '[]');
+      childName = children.find(child => child.id === childId)?.nick || childName;
+    } catch (e) {}
+  }
+  $('topic').textContent = `${childName} · ${pack.chapter || 'Learning progress'}${concept ? ': ' + concept.title.en : ''}${sample ? ' · SAMPLE DATA' : ''}`;
+  $('sample-note').hidden = !sample;
+  $('sample-link').hidden = sample;
+  if (childId) $('sample-link').href = `passport.html?child=${encodeURIComponent(childId)}&sample=1`;
 
   data.strands.forEach(s => $('strands').appendChild(strandItem(s)));   // strengths first
   $('offline-note').hidden = data.offlineTotal === 0;
@@ -138,7 +212,7 @@ async function init() {
   $('next-ml').textContent = na ? (typeof na === 'object' ? na.ml : na) : '';
   $('passport').hidden = false;
 }
-init();
+init().catch(() => showEmpty('Could not build the passport. Please reload and try again.'));
 </script>
 </body>
 </html>
