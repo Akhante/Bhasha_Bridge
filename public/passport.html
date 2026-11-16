@@ -37,7 +37,7 @@
 </head>
 <body>
 <main>
-  <a class="back" href="index.html">&larr; Back</a>
+<a class="back" href="index.html">&larr; Back</a>
   <a class="back" id="sample-link" href="passport.html?sample=1" style="float:right">View sample passport</a>
   <h1>My Learning Passport</h1>
   <p class="sub" id="topic"></p>
@@ -60,6 +60,16 @@
 <script src="rules.js"></script>
 <script>
 const params = new URLSearchParams(location.search);
+const backLink = document.getElementById('back-link');
+if (document.referrer) {
+  const previous = new URL(document.referrer);
+  if (previous.origin === location.origin && previous.pathname.endsWith('/index.html')) {
+    backLink.addEventListener('click', event => {
+      event.preventDefault();
+      history.back();
+    });
+  }
+}
 const sample = params.get('sample') === '1';   // fake evidence for demos
 const $ = id => document.getElementById(id);
 function showEmpty(msg) { $('empty').textContent = msg; $('empty').hidden = false; }
