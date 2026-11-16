@@ -132,7 +132,11 @@
     `<span class="bi"><span class="ml" lang="ml">${esc(o?.ml)}</span><span class="en" lang="en">${esc(o?.en)}</span></span>`;
   const plain = (o) =>
     (document.body.dataset.lang === "en" ? o?.en : o?.ml) || "";
-
+  /* speech language follows the top-right selector; "both" keeps each gate's own default */
+  const langCode = (dflt) => {
+    const l = document.body.dataset.lang;
+    return l === "en" ? "en-IN" : l === "ml" ? "ml-IN" : dflt;
+  };
   /* ---- bridges to teammates' code, with local fallbacks ---- */
   const ev = {
     load: (id) =>
@@ -541,7 +545,7 @@
             stat(bi(u("processing")));
             let text = "";
             try {
-              text = ((await W.stopRecording(lc)) || "").trim();
+              text = ((await W.stopRecording(langCode(lc))) || "").trim();
             } catch (e) {}
             if (!text) return stat(bi(u("no_speech")));
             $("#s-gate").innerHTML =
@@ -806,7 +810,8 @@
   };
   document.addEventListener("click", (e) => {
     const resumeLink = e.target.closest("a[data-resume-child]");
-    if (resumeLink) sessionStorage.setItem("bb_resume_child", resumeLink.dataset.resumeChild);
+    if (resumeLink)
+      sessionStorage.setItem("bb_resume_child", resumeLink.dataset.resumeChild);
     const t = e.target.closest("button");
     if (!t) return;
     if (t.dataset.lang) setLang(t.dataset.lang);
