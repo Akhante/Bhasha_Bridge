@@ -631,7 +631,7 @@ textarea {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -42px;
+  bottom: -52px;
   width: max-content;
   max-width: 170px;
   color: var(--ink);
@@ -639,6 +639,7 @@ textarea {
   line-height: 1.2;
   font-weight: 700;
   text-align: center;
+  white-space: nowrap;
 }
 body[data-lang="both"] .mic span {
   max-width: 190px;
@@ -665,11 +666,11 @@ body[data-lang="both"] .mic span {
 .ans {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   padding-bottom: 22px;
 }
 .ans .mic {
-  margin: 6px auto 52px;
+  margin: 6px auto 58px;
 }
 .stat {
   min-height: 28px;
