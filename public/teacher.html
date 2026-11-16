@@ -1,74 +1,216 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BhashaBridge · Teacher</title>
-<link rel="stylesheet" href="style.css">
-<style>
-/* Teacher portal: builds on style.css (colors, buttons, cards, header, sheet, toast) */
-.mute{color:var(--mute)}
-label{display:block;font-weight:700;margin:16px 0 0}
-input[type=password],select{width:100%;font:inherit;padding:13px 16px;border:2px solid var(--line);border-radius:16px;background:#fbfdfb;color:var(--ink);margin-top:8px}
-input[type=password]:focus,select:focus{outline:0;border-color:var(--green);box-shadow:0 0 0 4px #2f8f6b33}
-.chips{margin-top:8px}
-.chips label{position:relative;margin:0;font-weight:600}
-.chips input{position:absolute;opacity:0}
-.chips span{cursor:pointer;padding:5px 16px;background:#fff;border:2px solid var(--line);font-weight:700;line-height:1.6}
-.chips input:checked+span{background:var(--green);border-color:var(--green);color:#fff}
-.chips input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
-.err{color:var(--hib);font-weight:700;min-height:1.6em;margin:10px 0 0}
-.btn.bad{background:linear-gradient(180deg,#e8528a,var(--hib));box-shadow:0 6px 0 #8b1c46,0 14px 22px -8px #d6336c66,inset 0 1px 0 #ffffff55}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.top .btn{width:auto;min-height:44px;margin:0;padding:6px 18px;font-size:.95rem}
-.small{display:flex;gap:8px;margin-top:12px}
-.small .btn{margin:0;min-height:46px;padding:4px 10px;font-size:.95rem;border-radius:14px}
-.crumb{font-size:.9rem;color:var(--mute);margin:0 0 4px}
-.crumb a{color:var(--green);font-weight:700}
-pre{white-space:pre-wrap;font:inherit;margin:0}
-header a.ico{display:grid;place-items:center;text-decoration:none}
-</style>
-</head>
-<body>
-<header>
-  <div class="brand"><span aria-hidden="true">🌿</span> BhashaBridge · Teachers</div>
-  <div class="tools"><a class="ico" href="landing.html" aria-label="Back to start">🏠</a></div>
-</header>
-<main id="app"></main>
-<div id="modal" class="modal" hidden></div>
-<div id="toast" class="toast" role="status"></div>
-<script>
-/* BhashaBridge teacher portal. Plain JS, data lives only in this browser (localStorage).
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BhashaBridge · Teacher</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Teacher portal: builds on style.css (colors, buttons, cards, header, sheet, toast) */
+      .mute {
+        color: var(--mute);
+      }
+      label {
+        display: block;
+        font-weight: 700;
+        margin: 16px 0 0;
+      }
+      input[type="password"],
+      select {
+        width: 100%;
+        font: inherit;
+        padding: 13px 16px;
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        background: #fbfdfb;
+        color: var(--ink);
+        margin-top: 8px;
+      }
+      input[type="password"]:focus,
+      select:focus {
+        outline: 0;
+        border-color: var(--green);
+        box-shadow: 0 0 0 4px #2f8f6b33;
+      }
+      .chips {
+        margin-top: 8px;
+      }
+      .chips label {
+        position: relative;
+        margin: 0;
+        font-weight: 600;
+      }
+      .chips input {
+        position: absolute;
+        opacity: 0;
+      }
+      .chips span {
+        cursor: pointer;
+        padding: 5px 16px;
+        background: #fff;
+        border: 2px solid var(--line);
+        font-weight: 700;
+        line-height: 1.6;
+      }
+      .chips input:checked + span {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+      .chips input:focus-visible + span {
+        outline: 3px solid var(--gold);
+        outline-offset: 2px;
+      }
+      .err {
+        color: var(--hib);
+        font-weight: 700;
+        min-height: 1.6em;
+        margin: 10px 0 0;
+      }
+      .btn.bad {
+        background: linear-gradient(180deg, #e8528a, var(--hib));
+        box-shadow:
+          0 6px 0 #8b1c46,
+          0 14px 22px -8px #d6336c66,
+          inset 0 1px 0 #ffffff55;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .top .btn {
+        width: auto;
+        min-height: 44px;
+        margin: 0;
+        padding: 6px 18px;
+        font-size: 0.95rem;
+      }
+      .small {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .small .btn {
+        margin: 0;
+        min-height: 46px;
+        padding: 4px 10px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+      }
+      .crumb {
+        font-size: 0.9rem;
+        color: var(--mute);
+        margin: 0 0 4px;
+      }
+      .crumb a {
+        color: var(--green);
+        font-weight: 700;
+      }
+      pre {
+        white-space: pre-wrap;
+        font: inherit;
+        margin: 0;
+      }
+      header a.ico {
+        display: grid;
+        place-items: center;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span aria-hidden="true">🌿</span> BhashaBridge · Teachers
+      </div>
+      <div class="tools">
+        <a class="ico" href="landing.html" aria-label="Back to start">🏠</a>
+      </div>
+    </header>
+    <main id="app"></main>
+    <div id="modal" class="modal" hidden></div>
+    <div id="toast" class="toast" role="status"></div>
+    <script>
+      /* BhashaBridge teacher portal. Plain JS, data lives only in this browser (localStorage).
    Flow: Landing, Sign up, Login, Teacher dashboard, Select grade and class, Class dashboard (add, edit, delete, view lesson packs). */
-const $ = (s, r = document) => r.querySelector(s);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const SUBJECTS = ["Science", "Mathematics", "Malayalam", "English", "Social Science"];
-const GRADES = [5, 6, 7, 8, 9, 10];
-const CLASSES = ["A", "B", "C", "D"];
-const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e) { return d; } };
-const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
-async function hash(p) {
-  if (!(window.crypto && crypto.subtle)) return p;
-  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(p));
-  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
-}
-let view = "login", ctx = {};
-const teacher = () => load("bb_teachers", []).find(t => t.id === localStorage.getItem("bb_teacher_session"));
-const go = (v, c) => { view = v; if (c) Object.assign(ctx, c); render(); window.scrollTo(0, 0); };
-let toastT;
-const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2200); };
-const err = m => { const e = $("#err"); if (e) e.textContent = m; };
-const chips = (name, items) => `<div class="chips">${items.map(i => `<label><input type="checkbox" name="${name}" value="${i}"><span>${i}</span></label>`).join("")}</div>`;
+      const $ = (s, r = document) => r.querySelector(s);
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const SUBJECTS = [
+        "Science",
+        "Mathematics",
+        "Malayalam",
+        "English",
+        "Social Science",
+      ];
+      const GRADES = [5, 6, 7, 8, 9, 10];
+      const CLASSES = ["A", "B", "C", "D"];
+      const load = (k, d) => {
+        try {
+          return JSON.parse(localStorage.getItem(k)) ?? d;
+        } catch (e) {
+          return d;
+        }
+      };
+      const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+      async function hash(p) {
+        if (!(window.crypto && crypto.subtle)) return p;
+        const b = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(p),
+        );
+        return [...new Uint8Array(b)]
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join("");
+      }
+      let view = "login",
+        ctx = {};
+      const teacher = () =>
+        load("bb_teachers", []).find(
+          (t) => t.id === localStorage.getItem("bb_teacher_session"),
+        );
+      const go = (v, c) => {
+        view = v;
+        if (c) Object.assign(ctx, c);
+        render();
+        window.scrollTo(0, 0);
+      };
+      let toastT;
+      const toast = (m) => {
+        const t = $("#toast");
+        t.textContent = m;
+        t.classList.add("on");
+        clearTimeout(toastT);
+        toastT = setTimeout(() => t.classList.remove("on"), 2200);
+      };
+      const err = (m) => {
+        const e = $("#err");
+        if (e) e.textContent = m;
+      };
+      const chips = (name, items) =>
+        `<div class="chips">${items.map((i) => `<label><input type="checkbox" name="${name}" value="${i}"><span>${i}</span></label>`).join("")}</div>`;
 
-const V = {
-  landing: () => `
+      const V = {
+        landing: () => `
     <h1>BhashaBridge for teachers</h1>
     <p class="mute">Add lesson packs for your classes and see them in one place.</p>
     <button class="btn" data-act="signup">Sign up as a teacher</button>
     <button class="btn alt" data-act="login">Log in</button>
     <p style="margin-top:22px"><a href="landing.html">Back to BhashaBridge home</a></p>`,
 
-  signup: () => `
+        signup: () => `
     <h1>Create your teacher account</h1>
     <form id="signup" autocomplete="off">
       <label for="name">Name</label><input id="name" name="name" type="text">
@@ -82,7 +224,7 @@ const V = {
     <button class="btn alt" data-act="login">I already have an account</button>
     <p class="crumb" style="margin-top:16px"><a href="landing.html">Back to start</a></p>`,
 
-  login: () => `
+        login: () => `
     <h1>Log in</h1>
     <form id="login">
       <label for="sid">School-specific ID</label><input id="sid" name="sid" type="text">
@@ -93,108 +235,191 @@ const V = {
     <button class="btn alt" data-act="signup">Create an account</button>
     <p class="crumb" style="margin-top:16px"><a href="landing.html">Back to start</a></p>`,
 
-  dashboard: t => `
+        dashboard: (t) => `
     <div class="top"><h1>Hello, ${esc(t.name)}</h1><button class="btn alt" data-act="logout">Log out</button></div>
     <p class="crumb"><a href="landing.html">Back to start</a></p>
     <div class="card"><h2>Your profile</h2>
       <p class="mute">School ID: ${esc(t.sid)}</p>
-      ${t.subjects.map(s => `<span class="tag">${esc(s)}</span>`).join("")}
-      ${t.grades.map(g => `<span class="tag">Grade ${g}</span>`).join("")}
+      ${t.subjects.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}
+      ${t.grades.map((g) => `<span class="tag">Grade ${g}</span>`).join("")}
     </div>
     <div class="card"><h2>Lesson packs</h2>
-      <p class="mute">You have ${load("bb_lessonpacks", []).filter(p => p.tid === t.id).length} saved.</p>
+      <p class="mute">You have ${load("bb_lessonpacks", []).filter((p) => p.tid === t.id).length} saved.</p>
       <button class="btn" data-act="select">Pick a grade and class</button></div>`,
 
-  select: t => `
+        select: (t) => `
     <p class="crumb"><a href="#" data-act="dashboard">Dashboard</a></p>
     <h1>Which class?</h1>
     <form id="select" class="card">
-      <label for="g">Grade</label><select id="g" name="g">${t.grades.map(g => `<option>${g}</option>`).join("")}</select>
-      <label for="c">Class</label><select id="c" name="c">${CLASSES.map(c => `<option>${c}</option>`).join("")}</select>
+      <label for="g">Grade</label><select id="g" name="g">${t.grades.map((g) => `<option>${g}</option>`).join("")}</select>
+      <label for="c">Class</label><select id="c" name="c">${CLASSES.map((c) => `<option>${c}</option>`).join("")}</select>
       <button class="btn" type="submit">Open class dashboard</button>
     </form>`,
 
-  klass: t => {
-    const ps = load("bb_lessonpacks", []).filter(p => p.tid === t.id && p.grade == ctx.grade && p.cls === ctx.cls);
-    return `
+        klass: (t) => {
+          const ps = load("bb_lessonpacks", []).filter(
+            (p) => p.tid === t.id && p.grade == ctx.grade && p.cls === ctx.cls,
+          );
+          return `
     <p class="crumb"><a href="#" data-act="select">Change class</a></p>
     <h1>Grade ${esc(ctx.grade)} · Class ${esc(ctx.cls)}</h1>
     <button class="btn" data-act="add">Add lesson pack</button>
-    ${ps.length ? ps.map(p => `<div class="card"><h2>${esc(p.title)}</h2><span class="tag">${esc(p.subject)}</span>
-        <div class="small"><button class="btn alt" data-act="view" data-id="${p.id}">View</button><button class="btn alt" data-act="edit" data-id="${p.id}">Edit</button><button class="btn alt" data-act="del" data-id="${p.id}">Delete</button></div></div>`).join("")
-      : `<div class="card"><p class="mute">No lesson packs for this class yet. Add the first one.</p></div>`}`;
-  }
-};
+    ${
+      ps.length
+        ? ps
+            .map(
+              (
+                p,
+              ) => `<div class="card"><h2>${esc(p.title)}</h2><span class="tag">${esc(p.subject)}</span>
+        <div class="small"><button class="btn alt" data-act="view" data-id="${p.id}">View</button><button class="btn alt" data-act="edit" data-id="${p.id}">Edit</button><button class="btn alt" data-act="del" data-id="${p.id}">Delete</button></div></div>`,
+            )
+            .join("")
+        : `<div class="card"><p class="mute">No lesson packs for this class yet. Add the first one.</p></div>`
+    }`;
+        },
+      };
 
-function render() {
-  const t = teacher();
-  if (!t && !["signup", "login"].includes(view)) view = "login";
-  if (t && ["signup", "login"].includes(view)) view = "dashboard";
-  $("#app").innerHTML = V[view](t);
-}
+      function render() {
+        const t = teacher();
+        if (!t && !["signup", "login"].includes(view)) view = "login";
+        if (t && ["signup", "login"].includes(view)) view = "dashboard";
+        $("#app").innerHTML = V[view](t);
+      }
 
-function modal(html) { const m = $("#modal"); m.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`; m.hidden = false; }
-const closeModal = () => { $("#modal").hidden = true; };
+      function modal(html) {
+        const m = $("#modal");
+        m.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`;
+        m.hidden = false;
+      }
+      const closeModal = () => {
+        $("#modal").hidden = true;
+      };
 
-function packForm(p) {
-  const t = teacher();
-  modal(`<h1>${p ? "Edit lesson pack" : "Add lesson pack"}</h1>
+      function packForm(p) {
+        const t = teacher();
+        modal(`<h1>${p ? "Edit lesson pack" : "Add lesson pack"}</h1>
     <form id="pack" data-id="${p ? p.id : ""}">
       <label for="pt">Title</label><input id="pt" name="title" type="text" value="${esc(p?.title)}">
-      <label for="ps">Subject</label><select id="ps" name="subject">${t.subjects.map(s => `<option ${p?.subject === s ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
+      <label for="ps">Subject</label><select id="ps" name="subject">${t.subjects.map((s) => `<option ${p?.subject === s ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
       <label for="pb">Lesson content</label><textarea id="pb" name="body">${esc(p?.body)}</textarea>
       <p id="err" class="err" role="alert"></p>
       <button class="btn" type="submit">Save lesson pack</button>
       <button class="btn alt" type="button" data-act="close">Cancel</button>
     </form>`);
-}
+      }
 
-document.addEventListener("submit", async e => {
-  e.preventDefault();
-  const f = e.target, d = new FormData(f), list = load("bb_teachers", []);
-  if (f.id === "signup") {
-    const name = d.get("name").trim(), sid = d.get("sid").trim(), pw = d.get("pw");
-    const subjects = d.getAll("subj"), grades = d.getAll("grade").map(Number);
-    if (!name || !sid) return err("Enter your name and school ID.");
-    if (list.some(x => x.sid.toLowerCase() === sid.toLowerCase())) return err("That school ID is already registered. Log in instead.");
-    if (!subjects.length || !grades.length) return err("Choose at least one subject and one grade.");
-    if (pw.length < 6) return err("Use a password with at least 6 characters.");
-    const t = { id: "t" + Date.now().toString(36), name, sid, subjects, grades, pw: await hash(pw) };
-    list.push(t); save("bb_teachers", list);
-    localStorage.setItem("bb_teacher_session", t.id); go("dashboard");
-  } else if (f.id === "login") {
-    const sid = d.get("sid").trim(), h = await hash(d.get("pw"));
-    const t = list.find(x => x.sid.toLowerCase() === sid.toLowerCase() && x.pw === h);
-    if (!t) return err("School ID or password is wrong. Check both and try again.");
-    localStorage.setItem("bb_teacher_session", t.id); go("dashboard");
-  } else if (f.id === "select") {
-    go("klass", { grade: d.get("g"), cls: d.get("c") });
-  } else if (f.id === "pack") {
-    const title = d.get("title").trim(), body = d.get("body").trim();
-    if (!title || !body) return err("Add a title and the lesson content.");
-    const t = teacher(), all = load("bb_lessonpacks", []), id = f.dataset.id;
-    if (id) Object.assign(all.find(p => p.id === id), { title, body, subject: d.get("subject") });
-    else all.push({ id: "p" + Date.now().toString(36), tid: t.id, grade: ctx.grade, cls: ctx.cls, subject: d.get("subject"), title, body });
-    save("bb_lessonpacks", all); closeModal(); render(); toast(id ? "Lesson pack updated" : "Lesson pack added");
-  }
-});
+      document.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const f = e.target,
+          d = new FormData(f),
+          list = load("bb_teachers", []);
+        if (f.id === "signup") {
+          const name = d.get("name").trim(),
+            sid = d.get("sid").trim(),
+            pw = d.get("pw");
+          const subjects = d.getAll("subj"),
+            grades = d.getAll("grade").map(Number);
+          if (!name || !sid) return err("Enter your name and school ID.");
+          if (list.some((x) => x.sid.toLowerCase() === sid.toLowerCase()))
+            return err("That school ID is already registered. Log in instead.");
+          if (!subjects.length || !grades.length)
+            return err("Choose at least one subject and one grade.");
+          if (pw.length < 6)
+            return err("Use a password with at least 6 characters.");
+          const t = {
+            id: "t" + Date.now().toString(36),
+            name,
+            sid,
+            subjects,
+            grades,
+            pw: await hash(pw),
+          };
+          list.push(t);
+          save("bb_teachers", list);
+          localStorage.setItem("bb_teacher_session", t.id);
+          go("dashboard");
+        } else if (f.id === "login") {
+          const sid = d.get("sid").trim(),
+            h = await hash(d.get("pw"));
+          const t = list.find(
+            (x) => x.sid.toLowerCase() === sid.toLowerCase() && x.pw === h,
+          );
+          if (!t)
+            return err(
+              "School ID or password is wrong. Check both and try again.",
+            );
+          localStorage.setItem("bb_teacher_session", t.id);
+          go("dashboard");
+        } else if (f.id === "select") {
+          go("klass", { grade: d.get("g"), cls: d.get("c") });
+        } else if (f.id === "pack") {
+          const title = d.get("title").trim(),
+            body = d.get("body").trim();
+          if (!title || !body)
+            return err("Add a title and the lesson content.");
+          const t = teacher(),
+            all = load("bb_lessonpacks", []),
+            id = f.dataset.id;
+          if (id)
+            Object.assign(
+              all.find((p) => p.id === id),
+              { title, body, subject: d.get("subject") },
+            );
+          else
+            all.push({
+              id: "p" + Date.now().toString(36),
+              tid: t.id,
+              grade: ctx.grade,
+              cls: ctx.cls,
+              subject: d.get("subject"),
+              title,
+              body,
+            });
+          save("bb_lessonpacks", all);
+          closeModal();
+          render();
+          toast(id ? "Lesson pack updated" : "Lesson pack added");
+        }
+      });
 
-document.addEventListener("click", e => {
-  const b = e.target.closest("[data-act]");
-  if (!b) { if (e.target.id === "modal") closeModal(); return; }
-  e.preventDefault();
-  const a = b.dataset.act, id = b.dataset.id, packs = load("bb_lessonpacks", []), p = packs.find(x => x.id === id);
-  if (["signup", "login", "dashboard", "select"].includes(a)) go(a);
-  else if (a === "logout") { localStorage.removeItem("bb_teacher_session"); go("login"); }
-  else if (a === "add") packForm();
-  else if (a === "edit") packForm(p);
-  else if (a === "close") closeModal();
-  else if (a === "view") modal(`<h1>${esc(p.title)}</h1><span class="tag">${esc(p.subject)}</span><span class="tag">Grade ${esc(p.grade)} · Class ${esc(p.cls)}</span><div class="card"><pre>${esc(p.body)}</pre></div><button class="btn alt" data-act="close">Close</button>`);
-  else if (a === "del") modal(`<h1>Delete this lesson pack?</h1><p>“${esc(p.title)}” will be removed. This can’t be undone.</p><div class="row"><button class="btn alt" data-act="close">Keep it</button><button class="btn bad" data-act="delok" data-id="${id}">Delete lesson pack</button></div>`);
-  else if (a === "delok") { save("bb_lessonpacks", packs.filter(x => x.id !== id)); closeModal(); render(); toast("Lesson pack deleted"); }
-});
+      document.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-act]");
+        if (!b) {
+          if (e.target.id === "modal") closeModal();
+          return;
+        }
+        e.preventDefault();
+        const a = b.dataset.act,
+          id = b.dataset.id,
+          packs = load("bb_lessonpacks", []),
+          p = packs.find((x) => x.id === id);
+        if (["signup", "login", "dashboard", "select"].includes(a)) go(a);
+        else if (a === "logout") {
+          localStorage.removeItem("bb_teacher_session");
+          go("login");
+        } else if (a === "add") packForm();
+        else if (a === "edit") packForm(p);
+        else if (a === "close") closeModal();
+        else if (a === "view")
+          modal(
+            `<h1>${esc(p.title)}</h1><span class="tag">${esc(p.subject)}</span><span class="tag">Grade ${esc(p.grade)} · Class ${esc(p.cls)}</span><div class="card"><pre>${esc(p.body)}</pre></div><button class="btn alt" data-act="close">Close</button>`,
+          );
+        else if (a === "del")
+          modal(
+            `<h1>Delete this lesson pack?</h1><p>“${esc(p.title)}” will be removed. This can’t be undone.</p><div class="row"><button class="btn alt" data-act="close">Keep it</button><button class="btn bad" data-act="delok" data-id="${id}">Delete lesson pack</button></div>`,
+          );
+        else if (a === "delok") {
+          save(
+            "bb_lessonpacks",
+            packs.filter((x) => x.id !== id),
+          );
+          closeModal();
+          render();
+          toast("Lesson pack deleted");
+        }
+      });
 
-render();
-</script>
-</body>
+      render();
+    </script>
+  </body>
 </html>

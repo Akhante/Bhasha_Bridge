@@ -1,65 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ml">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>BhashaBridge</title>
-<link rel="stylesheet" href="style.css">
-<style>
-a.door{display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;transition:transform .15s}
-a.door:hover{transform:translateY(-3px)}
-a.door.stu{border-left:8px solid var(--leaf)}
-a.door.tea{border-left:8px solid var(--gold)}
-a.door h2{margin:0;font-size:1.3rem;line-height:1.5}
-a.door p{margin:2px 0 0;color:var(--mute);font-size:.95rem;line-height:1.5}
-.foot{margin-top:26px;color:var(--mute);font-size:.9rem;text-align:center}
-</style>
-</head>
-<body data-lang="both">
-<header>
-  <div class="brand"><span aria-hidden="true">🌿</span> BhashaBridge</div>
-  <div class="tools">
-    <div class="seg" role="group" aria-label="Language">
-      <button data-lang="ml">മല</button>
-      <button data-lang="both">മല·EN</button>
-      <button data-lang="en">EN</button>
-    </div>
-  </div>
-</header>
-<main>
-  <h1>
-    <span class="ml" lang="ml">നമസ്കാരം! നിങ്ങൾ ആരാണ്?</span>
-    <span class="en" lang="en">Welcome. Who is using this phone?</span>
-  </h1>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>BhashaBridge</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      a.door {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.15s;
+      }
+      a.door:hover {
+        transform: translateY(-3px);
+      }
+      a.door.stu {
+        border-left: 8px solid var(--leaf);
+      }
+      a.door.tea {
+        border-left: 8px solid var(--gold);
+      }
+      a.door h2 {
+        margin: 0;
+        font-size: 1.3rem;
+        line-height: 1.5;
+      }
+      a.door p {
+        margin: 2px 0 0;
+        color: var(--mute);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+      .foot {
+        margin-top: 26px;
+        color: var(--mute);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body data-lang="both">
+    <header>
+      <div class="brand"><span aria-hidden="true">🌿</span> BhashaBridge</div>
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Language">
+          <button data-lang="ml">മല</button>
+          <button data-lang="both">മല·EN</button>
+          <button data-lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <h1>
+        <span class="ml" lang="ml">നമസ്കാരം! നിങ്ങൾ ആരാണ്?</span>
+        <span class="en" lang="en">Welcome. Who is using this phone?</span>
+      </h1>
 
-  <!-- Student: opens the existing app, which starts at profile selection and creation -->
-  <a class="card door stu" href="index.html">
-    <div class="av" aria-hidden="true">🎒</div>
-    <div>
-      <h2><span class="ml" lang="ml">വിദ്യാർത്ഥി</span><span class="en" lang="en">I’m a student</span></h2>
-      <p><span class="ml" lang="ml">ചിത്രം തിരഞ്ഞെടുക്കൂ, അല്ലെങ്കിൽ പുതിയ പ്രൊഫൈൽ ഉണ്ടാക്കൂ.</span><span class="en" lang="en">Pick your picture or make a new profile, then start learning.</span></p>
-    </div>
-  </a>
+      <!-- Student: opens the existing app, which starts at profile selection and creation -->
+      <a class="card door stu" href="index.html">
+        <div class="av" aria-hidden="true">🎒</div>
+        <div>
+          <h2>
+            <span class="ml" lang="ml">വിദ്യാർത്ഥി</span
+            ><span class="en" lang="en">I’m a student</span>
+          </h2>
+          <p>
+            <span class="ml" lang="ml"
+              >ചിത്രം തിരഞ്ഞെടുക്കൂ, അല്ലെങ്കിൽ പുതിയ പ്രൊഫൈൽ ഉണ്ടാക്കൂ.</span
+            ><span class="en" lang="en"
+              >Pick your picture or make a new profile, then start
+              learning.</span
+            >
+          </p>
+        </div>
+      </a>
 
-  <!-- Teacher: opens the teacher portal -->
-  <a class="card door tea" href="teacher.html">
-    <div class="av" aria-hidden="true">🍎</div>
-    <div>
-      <h2><span class="ml" lang="ml">അധ്യാപകർ</span><span class="en" lang="en">I’m a teacher</span></h2>
-      <p><span class="ml" lang="ml">സൈൻ അപ്പ് ചെയ്യൂ അല്ലെങ്കിൽ ലോഗിൻ ചെയ്ത് പാഠ പാക്കുകൾ നോക്കൂ.</span><span class="en" lang="en">Sign up or log in to manage lesson packs for your classes.</span></p>
-    </div>
-  </a>
+      <!-- Teacher: opens the teacher portal -->
+      <a class="card door tea" href="teacher.html">
+        <div class="av" aria-hidden="true">🍎</div>
+        <div>
+          <h2>
+            <span class="ml" lang="ml">അധ്യാപകർ</span
+            ><span class="en" lang="en">I’m a teacher</span>
+          </h2>
+          <p>
+            <span class="ml" lang="ml"
+              >സൈൻ അപ്പ് ചെയ്യൂ അല്ലെങ്കിൽ ലോഗിൻ ചെയ്ത് പാഠ പാക്കുകൾ
+              നോക്കൂ.</span
+            ><span class="en" lang="en"
+              >Sign up or log in to manage lesson packs for your classes.</span
+            >
+          </p>
+        </div>
+      </a>
 
-  <p class="foot"><span class="ml" lang="ml">എല്ലാ വിവരങ്ങളും ഈ ഫോണിൽ മാത്രം സൂക്ഷിക്കുന്നു.</span><span class="en" lang="en">Everything is saved on this phone only.</span></p>
-</main>
-<script>
-function setLang(l, keep) {
-  document.body.dataset.lang = l;
-  document.documentElement.lang = l === "en" ? "en" : "ml";
-  if (keep) { try { localStorage.setItem("bb_lang", l); } catch (e) {} }
-}
-try { setLang(localStorage.getItem("bb_lang") || "both"); } catch (e) {}
-document.querySelectorAll(".seg button").forEach(b => b.onclick = () => setLang(b.dataset.lang, true));
-</script>
-</body>
+      <p class="foot">
+        <span class="ml" lang="ml"
+          >എല്ലാ വിവരങ്ങളും ഈ ഫോണിൽ മാത്രം സൂക്ഷിക്കുന്നു.</span
+        ><span class="en" lang="en"
+          >Everything is saved on this phone only.</span
+        >
+      </p>
+    </main>
+    <script>
+      function setLang(l, keep) {
+        document.body.dataset.lang = l;
+        document.documentElement.lang = l === "en" ? "en" : "ml";
+        if (keep) {
+          try {
+            localStorage.setItem("bb_lang", l);
+          } catch (e) {}
+        }
+      }
+      try {
+        setLang(localStorage.getItem("bb_lang") || "both");
+      } catch (e) {}
+      document
+        .querySelectorAll(".seg button")
+        .forEach((b) => (b.onclick = () => setLang(b.dataset.lang, true)));
+    </script>
+  </body>
 </html>
