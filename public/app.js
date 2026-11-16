@@ -137,6 +137,12 @@
     const l = document.body.dataset.lang;
     return l === "en" ? "en-IN" : l === "ml" ? "ml-IN" : dflt;
   };
+  /* placeholder text follows the selector; "both" shows Malayalam · English */
+  const ph = () => {
+    const t = u("type_here"),
+      l = document.body.dataset.lang;
+    return l === "en" ? t.en : l === "ml" ? t.ml : `${t.ml} · ${t.en}`;
+  };
   /* ---- bridges to teammates' code, with local fallbacks ---- */
   const ev = {
     load: (id) =>
@@ -270,6 +276,8 @@
     document.body.dataset.lang = l;
     document.documentElement.lang = l === "en" ? "en" : "ml";
     localStorage.setItem("bb_lang", l);
+    const tb = $("#typed");
+    if (tb) tb.placeholder = ph();
   };
   const modal = (html) => {
     const m = $("#modal");
@@ -495,7 +503,7 @@
           }
           <div id="stat" class="stat" aria-live="polite"></div>
           ${canSpeak ? `<div class="or"><span>${bi({ ml: "അല്ലെങ്കിൽ", en: "or" })}</span></div>` : ""}
-          <textarea id="typed" rows="3" placeholder="${esc(u("type_here").ml)}"></textarea>
+          <textarea id="typed" rows="3" placeholder="${esc(ph())}"></textarea>
         </div>
         <button id="go" class="btn" disabled>${bi(u("done"))}</button>`;
         const stat = (m) => {
