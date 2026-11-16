@@ -428,8 +428,8 @@
       <button class="btn ${c === rec ? "gold" : ""}" data-go="${c.id}">${bi(u("start_session"))}</button></div>`,
       )
       .join("")}
-    <div class="row"><a class="btn alt" style="text-decoration:none;text-align:center;padding-top:12px" href="passport.html?child=${S.kid.id}">${bi(u("passport"))}</a>
-    <a class="btn alt" style="text-decoration:none;text-align:center;padding-top:12px" href="pulse.html?child=${S.kid.id}">${bi(u("parent_pulse_title"))}</a></div>
+    <div class="row"><a class="btn alt" style="text-decoration:none;text-align:center;padding-top:12px" href="passport.html?child=${S.kid.id}" data-resume-child="${S.kid.id}">${bi(u("passport"))}</a>
+    <a class="btn alt" style="text-decoration:none;text-align:center;padding-top:12px" href="pulse.html?child=${S.kid.id}" data-resume-child="${S.kid.id}">${bi(u("parent_pulse_title"))}</a></div>
     <button class="btn alt" data-act="kids">${bi(u("switch_child"))}</button>`;
     show("s-home");
   }
@@ -755,7 +755,7 @@
       `<p class="win">🌼</p><h1 class="center">${bi(u("session_done"))}</h1>
     <div class="card"><b>${bi(u("today"))}</b><ul class="sum">${GATES.map((g) => `<li><span>${bi(u("gate_" + g))}</span><span>${icon[S.sess.res[g]] || "–"}</span></li>`).join("")}</ul>${S.sess.low ? `<p class="note" style="margin-top:8px">${bi(u("low_note"))}</p>` : ""}</div>
     <div class="card"><b>${bi(u("your_next_15"))}</b><p class="big"><span class="ml" lang="ml">${esc(NEXT_ML[na.gate])}</span><span class="en" lang="en">${esc(na.text)}</span></p></div>
-    <a class="btn gold" style="text-decoration:none;text-align:center;padding-top:12px" href="passport.html?child=${S.kid.id}&amp;concept=${c.id}">${bi(u("see_passport"))}</a>
+    <a class="btn gold" style="text-decoration:none;text-align:center;padding-top:12px" href="passport.html?child=${S.kid.id}&amp;concept=${c.id}" data-resume-child="${S.kid.id}">${bi(u("see_passport"))}</a>
     <button class="btn alt" data-act="home">${bi(u("home"))}</button>`;
     show("s-end");
   }
@@ -801,6 +801,8 @@
       }),
   };
   document.addEventListener("click", (e) => {
+    const resumeLink = e.target.closest("a[data-resume-child]");
+    if (resumeLink) sessionStorage.setItem("bb_resume_child", resumeLink.dataset.resumeChild);
     const t = e.target.closest("button");
     if (!t) return;
     if (t.dataset.lang) setLang(t.dataset.lang);
@@ -819,6 +821,9 @@
   addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     S.install = e;
+  });
+  addEventListener("pageshow", (e) => {
+    if (e.persisted) sessionStorage.removeItem("bb_resume_child");
   });
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
@@ -847,6 +852,8 @@
     } catch (e) {
       S.kids = [];
     }
+    const resumeChildId = sessionStorage.getItem("bb_resume_child");
+    sessionStorage.removeItem("bb_resume_child");
     try {
       S.pack = await (await fetch("pack.json")).json();
     } catch (e) {
@@ -856,6 +863,8 @@
     }
     W.BB = { S, ev };
     history.pushState({}, ""); /* handy for the console and for teammates */
-    viewKids();
+    S.kid = S.kids.find((kid) => kid.id === resumeChildId) || null;
+    if (S.kid) viewHome();
+    else viewKids();
   })();
 })();
