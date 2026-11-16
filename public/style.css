@@ -1272,3 +1272,140 @@ body[data-lang="both"]
   margin-top: 0;
   text-align: left;
 }
+
+/* ===== v4: finish the polish ===== */
+
+/* the 🔊 button flows in the layout by default; only cards pin it to a corner */
+.listen {
+  position: static;
+  transform: none;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  line-height: 1;
+}
+.q .listen,
+.mcard .listen {
+  position: absolute;
+  top: 16px;
+  right: 14px;
+  transform: none;
+}
+.listen:active,
+.q .listen:active {
+  transform: translateY(3px);
+}
+.opt {
+  align-items: center;
+}
+
+/* Word bridge cards */
+.pairs .card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 190px;
+  padding: 22px 12px 16px;
+}
+.pairs .card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--gold), #ff9f45);
+}
+.pairs b {
+  font-size: 1.3rem;
+  line-height: 1.35;
+}
+.pairs b[lang="ml"] {
+  color: var(--ink);
+}
+.pairs b[lang="en"] {
+  width: 80%;
+  margin-top: 2px;
+  padding-top: 8px;
+  font-size: 1.15rem;
+  color: var(--leaf);
+  border-top: 2px dotted var(--line);
+}
+.pairs .listen {
+  margin-top: 12px;
+}
+
+/* heading hierarchy in bilingual mode */
+body[data-lang="both"] h1 .en {
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--mute);
+}
+body[data-lang="both"] h2 .en {
+  font-size: 0.7em;
+}
+.steps li .bi,
+.btn .bi {
+  align-items: center;
+}
+.pick .bi {
+  align-items: flex-start;
+}
+
+/* close button and disabled button */
+.x {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.15rem;
+}
+.x:hover {
+  background: #fde4ed;
+  color: var(--hib);
+}
+.btn[disabled]:active {
+  transform: none;
+  box-shadow: 0 6px 0 #97a79f;
+}
+
+/* gentle stagger when a lesson screen opens */
+#s-gate .card,
+#s-home .card,
+#s-end .card {
+  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+#s-gate .card:nth-child(3),
+#s-home .card:nth-child(2),
+#s-end .card:nth-child(2) {
+  animation-delay: 0.06s;
+}
+#s-gate .card:nth-child(4),
+#s-home .card:nth-child(3),
+#s-end .card:nth-child(3) {
+  animation-delay: 0.12s;
+}
+#s-home .card:nth-child(4) {
+  animation-delay: 0.18s;
+}
+
+/* small phones */
+@media (max-width: 380px) {
+  .pairs .card {
+    min-height: 170px;
+  }
+  .pairs b {
+    font-size: 1.1rem;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+  main {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
