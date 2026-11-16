@@ -67,8 +67,16 @@ body[data-lang="ml"] .en,
 body[data-lang="en"] .ml {
   display: none;
 }
+body[data-lang="both"] .ml,
 body[data-lang="both"] .en {
   display: block;
+  width: 100%;
+}
+body[data-lang="both"] .ml + .en,
+body[data-lang="both"] .en + .ml {
+  margin-top: 4px;
+}
+body[data-lang="both"] .en {
   font-size: 0.72em;
   line-height: 1.4;
   color: var(--mute);
@@ -268,6 +276,7 @@ h1 {
 .big .ml,
 .big .en {
   display: block;
+  width: 100%;
 }
 .listen {
   position: absolute;
