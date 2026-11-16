@@ -300,6 +300,10 @@
     $("#s-kids").innerHTML =
       `<h1>${bi(u("pick_child"))}</h1><div class="kids">${S.kids.map((k) => `<button class="kid" data-kid="${k.id}"><span class="av">${k.emoji}</span><b>${esc(k.nick)}</b></button>`).join("")}
     <button class="kid add" data-act="add"><span class="av">＋</span><b>${bi(u("add_child"))}</b></button></div>`;
+    $("#s-kids").insertAdjacentHTML(
+      "beforeend",
+      `<a class="btn alt" href="landing.html" style="text-decoration:none;text-align:center;padding-top:12px">${bi({ ml: "തുടക്കത്തിലേക്ക് മടങ്ങൂ", en: "Back to start" })}</a>`,
+    );
     show("s-kids");
   }
   function pinPad(sec, head, done) {
