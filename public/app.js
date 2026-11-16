@@ -129,7 +129,7 @@
   const u = (k) =>
     S.pack?.ui?.[k] || (X[k] ? { ml: X[k][0], en: X[k][1] } : { ml: k, en: k });
   const bi = (o) =>
-    `<span class="ml" lang="ml">${esc(o?.ml)}</span><span class="en" lang="en">${esc(o?.en)}</span>`;
+    `<span class="bi"><span class="ml" lang="ml">${esc(o?.ml)}</span><span class="en" lang="en">${esc(o?.en)}</span></span>`;
   const plain = (o) =>
     (document.body.dataset.lang === "en" ? o?.en : o?.ml) || "";
 
@@ -472,12 +472,24 @@
         navigator.mediaDevices &&
         W.MediaRecorder
       );
+      const canSpeak = voice && navigator.onLine;
       const draw = () => {
         $("#s-gate").innerHTML =
           stepper(gate) +
           qCard(q) +
-          `<div class="card ans">${voice && navigator.onLine ? `<button id="mic" class="mic" aria-label="Speak">🎤<span>${bi(u("record"))}</span></button>` : `<p class="note">${bi(u(voice ? "voice_net" : "mic_blocked"))}</p>`}
-      <div id="stat" class="stat" aria-live="polite"></div><textarea id="typed" rows="3" placeholder="${esc(u("type_here").ml)}"></textarea></div><button id="go" class="btn" disabled>${bi(u("done"))}</button>`;
+          `<div class="card ans">
+          ${
+            canSpeak
+              ? `<div class="micwrap" id="mw"><i class="rip"></i><i class="rip"></i>
+                <button id="mic" class="mic" aria-label="Speak">🎤</button>
+                <p class="miclabel" id="mlab">${bi(u("record"))}</p></div>`
+              : `<p class="note">${bi(u(voice ? "voice_net" : "mic_blocked"))}</p>`
+          }
+          <div id="stat" class="stat" aria-live="polite"></div>
+          ${canSpeak ? `<div class="or"><span>${bi({ ml: "അല്ലെങ്കിൽ", en: "or" })}</span></div>` : ""}
+          <textarea id="typed" rows="3" placeholder="${esc(u("type_here").ml)}"></textarea>
+        </div>
+        <button id="go" class="btn" disabled>${bi(u("done"))}</button>`;
         const stat = (m) => {
             $("#stat").innerHTML = m;
           },
@@ -491,6 +503,17 @@
           res({ text: typed.value.trim(), input: "typed" });
         const mic = $("#mic");
         if (!mic) return;
+        const wrap = $("#mw"),
+          lab = $("#mlab");
+        const setRec = (on) => {
+          rec = on;
+          wrap.classList.toggle("rec", on);
+          mic.classList.toggle("rec", on);
+          lab.innerHTML = bi(
+            u(on ? "stop" : "record"),
+          ); /* label switches Speak to Stop */
+          mic.setAttribute("aria-label", plain(u(on ? "stop" : "record")));
+        };
         mic.onclick = async () => {
           if (!rec) {
             try {
@@ -499,18 +522,18 @@
               stat(bi(u("mic_blocked")));
               return;
             }
-            rec = true;
+            setRec(true);
             t0 = Date.now();
-            mic.classList.add("rec");
             S.tick = setInterval(() => {
               const s = Math.floor((Date.now() - t0) / 1000);
-              stat(`${bi(u("listening"))} 0:${String(s).padStart(2, "0")}`);
+              stat(
+                `${bi(u("listening"))}<b class="timer">0:${String(s).padStart(2, "0")}</b>`,
+              );
               if (s >= 30) mic.click();
             }, 250);
           } else {
-            rec = false;
             clearInterval(S.tick);
-            mic.classList.remove("rec");
+            setRec(false);
             stat(bi(u("processing")));
             let text = "";
             try {
@@ -521,7 +544,7 @@
               stepper(gate) +
               qCard(q) +
               `<div class="card"><p class="quote">“${esc(text)}”</p><p class="note">${bi(u("readback_question"))}</p>${listen(u("readback_question"))}</div>
-          <button id="yes" class="btn">${bi(u("yes"))}</button><button id="no" class="btn alt">${bi(u("no_again"))}</button>`;
+            <button id="yes" class="btn">${bi(u("yes"))}</button><button id="no" class="btn alt">${bi(u("no_again"))}</button>`;
             play(u("readback_question").audio);
             $("#yes").onclick = () => res({ text, input: "voice" });
             $("#no").onclick =

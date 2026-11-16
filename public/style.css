@@ -1111,3 +1111,164 @@ details summary {
     print-color-adjust: exact;
   }
 }
+/* ===== v3: bilingual layout + voice card ===== */
+.bi {
+  display: inline;
+}
+body[data-lang="both"] .bi {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 100%;
+  vertical-align: top;
+}
+body[data-lang="both"] .bi .ml,
+body[data-lang="both"] .bi .en {
+  display: block;
+  width: auto;
+  margin: 0;
+}
+
+/* small labels: Malayalam · English on a single line */
+body[data-lang="both"] :is(.pill, .badge, .tab, .tag, .chip, .chips span) .bi {
+  display: inline;
+}
+body[data-lang="both"]
+  :is(.pill, .badge, .tab, .tag, .chip, .chips span)
+  .bi
+  .ml,
+body[data-lang="both"]
+  :is(.pill, .badge, .tab, .tag, .chip, .chips span)
+  .bi
+  .en {
+  display: inline;
+}
+body[data-lang="both"]
+  :is(.pill, .badge, .tab, .tag, .chip, .chips span)
+  .bi
+  .en {
+  font-size: 0.92em;
+  opacity: 0.85;
+}
+body[data-lang="both"]
+  :is(.pill, .badge, .tab, .tag, .chip, .chips span)
+  .bi
+  .en::before {
+  content: " · ";
+}
+
+/* listen button sits beside the first line, not in the middle of tall cards */
+.q .listen {
+  top: 16px;
+  transform: none;
+}
+.q .listen:active {
+  transform: translateY(3px);
+}
+
+/* voice answer card */
+.ans {
+  align-items: center;
+  gap: 8px;
+  padding: 22px 18px 20px;
+  text-align: center;
+  background: linear-gradient(180deg, #fff, #f3faf6);
+}
+.micwrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin: 4px 0 2px;
+}
+.ans .mic {
+  margin: 0;
+}
+.rip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 156px;
+  height: 156px;
+  margin-left: -78px;
+  border-radius: 50%;
+  border: 3px solid var(--hib);
+  opacity: 0;
+  pointer-events: none;
+}
+.micwrap.rec .rip {
+  animation: ripple 1.8s ease-out infinite;
+}
+.micwrap.rec .rip:nth-of-type(2) {
+  animation-delay: 0.9s;
+}
+@keyframes ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+.miclabel {
+  margin: 0;
+  min-width: 150px;
+  padding: 3px 24px;
+  border-radius: 22px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 0 #08302f;
+  text-align: center;
+  transition: background 0.2s;
+}
+.miclabel .en {
+  color: inherit;
+  opacity: 0.85;
+}
+.micwrap.rec .miclabel {
+  background: var(--hib);
+  box-shadow: 0 4px 0 #8b1c46;
+}
+.stat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  margin: 0;
+  color: var(--mute);
+  font-weight: 600;
+}
+.stat .timer {
+  font-variant-numeric: tabular-nums;
+  color: var(--hib);
+}
+.or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 6px;
+  color: var(--mute);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.or::before,
+.or::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.ans textarea {
+  margin-top: 0;
+  text-align: left;
+}
