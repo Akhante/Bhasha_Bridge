@@ -134,7 +134,7 @@
     <div id="toast" class="toast" role="status"></div>
     <script>
       /* BhashaBridge teacher portal. Plain JS, data lives only in this browser (localStorage).
-   Flow: Landing, Sign up, Login, Teacher dashboard, Select grade and class, Class dashboard (add, edit, delete, view lesson packs). */
+   Flow: Landing, Sign up, Login, Teacher dashboard, Select grade, Class dashboard (add, edit, delete, view lesson packs). */
       const $ = (s, r = document) => r.querySelector(s);
       const esc = (s) =>
         String(s ?? "").replace(
@@ -156,7 +156,6 @@
         "Social Science",
       ];
       const GRADES = [5, 6, 7, 8, 9, 10];
-      const CLASSES = ["A", "B", "C", "D"];
       const load = (k, d) => {
         try {
           return JSON.parse(localStorage.getItem(k)) ?? d;
@@ -245,24 +244,23 @@
     </div>
     <div class="card"><h2>Lesson packs</h2>
       <p class="mute">You have ${load("bb_lessonpacks", []).filter((p) => p.tid === t.id).length} saved.</p>
-      <button class="btn" data-act="select">Pick a grade and class</button></div>`,
+      <button class="btn" data-act="select">Pick a grade</button></div>`,
 
         select: (t) => `
     <p class="crumb"><a href="#" data-act="dashboard">Dashboard</a></p>
-    <h1>Which class?</h1>
+    <h1>Which grade?</h1>
     <form id="select" class="card">
       <label for="g">Grade</label><select id="g" name="g">${t.grades.map((g) => `<option>${g}</option>`).join("")}</select>
-      <label for="c">Class</label><select id="c" name="c">${CLASSES.map((c) => `<option>${c}</option>`).join("")}</select>
-      <button class="btn" type="submit">Open class dashboard</button>
+      <button class="btn" type="submit">Open lesson packs</button>
     </form>`,
 
         klass: (t) => {
           const ps = load("bb_lessonpacks", []).filter(
-            (p) => p.tid === t.id && p.grade == ctx.grade && p.cls === ctx.cls,
+            (p) => p.tid === t.id && p.grade == ctx.grade,
           );
           return `
-    <p class="crumb"><a href="#" data-act="select">Change class</a></p>
-    <h1>Grade ${esc(ctx.grade)} · Class ${esc(ctx.cls)}</h1>
+    <p class="crumb"><a href="#" data-act="select">Change grade</a></p>
+    <h1>Grade ${esc(ctx.grade)}</h1>
     <button class="btn" data-act="add">Add lesson pack</button>
     ${
       ps.length
@@ -351,7 +349,7 @@
           localStorage.setItem("bb_teacher_session", t.id);
           go("dashboard");
         } else if (f.id === "select") {
-          go("klass", { grade: d.get("g"), cls: d.get("c") });
+          go("klass", { grade: d.get("g") });
         } else if (f.id === "pack") {
           const title = d.get("title").trim(),
             body = d.get("body").trim();
@@ -370,7 +368,6 @@
               id: "p" + Date.now().toString(36),
               tid: t.id,
               grade: ctx.grade,
-              cls: ctx.cls,
               subject: d.get("subject"),
               title,
               body,
@@ -402,7 +399,7 @@
         else if (a === "close") closeModal();
         else if (a === "view")
           modal(
-            `<h1>${esc(p.title)}</h1><span class="tag">${esc(p.subject)}</span><span class="tag">Grade ${esc(p.grade)} · Class ${esc(p.cls)}</span><div class="card"><pre>${esc(p.body)}</pre></div><button class="btn alt" data-act="close">Close</button>`,
+            `<h1>${esc(p.title)}</h1><span class="tag">${esc(p.subject)}</span><span class="tag">Grade ${esc(p.grade)}</span><div class="card"><pre>${esc(p.body)}</pre></div><button class="btn alt" data-act="close">Close</button>`,
           );
         else if (a === "del")
           modal(
