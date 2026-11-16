@@ -1,5 +1,5 @@
 /* BhashaBridge service worker. Bump V on every deploy so phones pick up the new files. */
-const V = "bb-v5";
+const V = "bb-v6";
 const CORE = [
   "index.html",
   "style.css",
