@@ -631,13 +631,14 @@ textarea {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -34px;
+  bottom: -42px;
   width: max-content;
   max-width: 170px;
   color: var(--ink);
   font-size: 0.9rem;
   line-height: 1.2;
   font-weight: 700;
+  text-align: center;
 }
 body[data-lang="both"] .mic span {
   max-width: 190px;
@@ -668,7 +669,7 @@ body[data-lang="both"] .mic span {
   padding-bottom: 22px;
 }
 .ans .mic {
-  margin: 6px auto 16px;
+  margin: 6px auto 52px;
 }
 .stat {
   min-height: 28px;

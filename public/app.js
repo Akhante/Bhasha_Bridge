@@ -219,8 +219,8 @@
     });
   const liveCache = {};
   async function speak(file, text) {
-    if (file && (await play(file))) return;      // pre-made file worked
-    if (!text || text === "...") return;          // nothing real to say yet
+    if (file && (await play(file))) return; // pre-made file worked
+    if (!text || text === "...") return; // nothing real to say yet
     try {
       let src = liveCache[text];
       if (!src) {
@@ -782,7 +782,8 @@
     if (!t) return;
     if (t.dataset.lang) setLang(t.dataset.lang);
     else if (t.id === "gear") viewSettings();
-    else if (t.classList.contains("listen")) speak(t.dataset.audio, t.dataset.text);
+    else if (t.classList.contains("listen"))
+      speak(t.dataset.audio, t.dataset.text);
     else if (t.dataset.kid) viewPin(S.kids.find((k) => k.id === t.dataset.kid));
     else if (t.dataset.go) startSession(t.dataset.go);
     else if (t.dataset.act) acts[t.dataset.act]?.();
