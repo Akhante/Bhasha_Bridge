@@ -113,6 +113,22 @@
         font: inherit;
         margin: 0;
       }
+      input[type="file"] {
+        width: 100%;
+        font: inherit;
+        padding: 14px;
+        border: 2px dashed var(--leaf);
+        border-radius: 16px;
+        background: #fbfdfb;
+        color: var(--ink);
+        margin-top: 8px;
+      }
+      .preview {
+        max-width: 100%;
+        border-radius: 12px;
+        display: block;
+        margin: 10px 0;
+      }
       header a.ico {
         display: grid;
         place-items: center;
@@ -216,6 +232,9 @@
       <label for="sid">School-specific ID</label><input id="sid" name="sid" type="text">
       <label>Subjects you teach</label>${chips("subj", SUBJECTS)}
       <label>Grades you teach</label>${chips("grade", GRADES)}
+      <label for="syl">Syllabus</label>
+      <select id="syl" name="syl"><option value="">Choose a syllabus</option><option>CBSE</option><option>NIOS</option><option>IGCSE</option><option>Other</option></select>
+      <input id="syl-other" name="sylOther" type="text" placeholder="Type your syllabus" aria-label="Other syllabus" hidden>
       <label for="pw">Password (6 or more characters)</label><input id="pw" name="pw" type="password">
       <p id="err" class="err" role="alert"></p>
       <button class="btn" type="submit">Create account</button>
@@ -239,6 +258,7 @@
     <p class="crumb"><a href="landing.html">Back to start</a></p>
     <div class="card"><h2>Your profile</h2>
       <p class="mute">School ID: ${esc(t.sid)}</p>
+      ${t.syllabus ? `<span class="tag">${esc(t.syllabus)}</span>` : ""}
       ${t.subjects.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}
       ${t.grades.map((g) => `<span class="tag">Grade ${g}</span>`).join("")}
     </div>
@@ -299,7 +319,9 @@
     <form id="pack" data-id="${p ? p.id : ""}">
       <label for="pt">Title</label><input id="pt" name="title" type="text" value="${esc(p?.title)}">
       <label for="ps">Subject</label><select id="ps" name="subject">${t.subjects.map((s) => `<option ${p?.subject === s ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
-      <label for="pb">Lesson content</label><textarea id="pb" name="body">${esc(p?.body)}</textarea>
+      <label for="pf">Lesson file (PDF, Word, PowerPoint, image or text, up to 1.5 MB)</label>
+      ${p?.file ? `<p class="note">Current file: ${esc(p.file.name)}. Choose a new file only if you want to replace it.</p>` : ""}
+      <input id="pf" name="file" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,image/*">
       <p id="err" class="err" role="alert"></p>
       <button class="btn" type="submit">Save lesson pack</button>
       <button class="btn alt" type="button" data-act="close">Cancel</button>
@@ -322,6 +344,11 @@
             return err("That school ID is already registered. Log in instead.");
           if (!subjects.length || !grades.length)
             return err("Choose at least one subject and one grade.");
+          const syl = d.get("syl"),
+            other = (d.get("sylOther") || "").trim();
+          if (!syl) return err("Choose your syllabus.");
+          if (syl === "Other" && !other)
+            return err("Type the name of your syllabus.");
           if (pw.length < 6)
             return err("Use a password with at least 6 characters.");
           const t = {
@@ -330,6 +357,7 @@
             sid,
             subjects,
             grades,
+            syllabus: syl === "Other" ? other : syl,
             pw: await hash(pw),
           };
           list.push(t);
@@ -352,31 +380,64 @@
           go("klass", { grade: d.get("g") });
         } else if (f.id === "pack") {
           const title = d.get("title").trim(),
-            body = d.get("body").trim();
-          if (!title || !body)
-            return err("Add a title and the lesson content.");
+            file = d.get("file");
           const t = teacher(),
             all = load("bb_lessonpacks", []),
-            id = f.dataset.id;
-          if (id)
-            Object.assign(
-              all.find((p) => p.id === id),
-              { title, body, subject: d.get("subject") },
-            );
-          else
+            id = f.dataset.id,
+            old = id ? all.find((p) => p.id === id) : null;
+          if (!title) return err("Add a title.");
+          let fileObj = null;
+          if (file && file.size) {
+            if (file.size > 1.5 * 1024 * 1024)
+              return err("That file is too big. Choose one under 1.5 MB.");
+            fileObj = await new Promise((ok, no) => {
+              const r = new FileReader();
+              r.onload = () =>
+                ok({
+                  name: file.name,
+                  type: file.type || "application/octet-stream",
+                  size: file.size,
+                  data: r.result,
+                });
+              r.onerror = no;
+              r.readAsDataURL(file);
+            });
+          }
+          if (!fileObj && !(old && (old.file || old.body)))
+            return err("Choose a lesson file to upload.");
+          if (old) {
+            Object.assign(old, { title, subject: d.get("subject") });
+            if (fileObj) {
+              old.file = fileObj;
+              delete old.body;
+            }
+          } else
             all.push({
               id: "p" + Date.now().toString(36),
               tid: t.id,
               grade: ctx.grade,
               subject: d.get("subject"),
               title,
-              body,
+              file: fileObj,
             });
-          save("bb_lessonpacks", all);
+          try {
+            save("bb_lessonpacks", all);
+          } catch (x) {
+            return err(
+              "This phone has no room left for lesson files. Delete an old pack or choose a smaller file.",
+            );
+          }
           closeModal();
           render();
           toast(id ? "Lesson pack updated" : "Lesson pack added");
         }
+      });
+
+      document.addEventListener("change", (e) => {
+        if (e.target.id !== "syl") return;
+        const o = $("#syl-other");
+        o.hidden = e.target.value !== "Other";
+        if (!o.hidden) o.focus();
       });
 
       document.addEventListener("click", (e) => {
@@ -397,9 +458,13 @@
         } else if (a === "add") packForm();
         else if (a === "edit") packForm(p);
         else if (a === "close") closeModal();
+        else if (a === "open")
+          fetch(p.file.data)
+            .then((r) => r.blob())
+            .then((bl) => window.open(URL.createObjectURL(bl), "_blank"));
         else if (a === "view")
           modal(
-            `<h1>${esc(p.title)}</h1><span class="tag">${esc(p.subject)}</span><span class="tag">Grade ${esc(p.grade)}</span><div class="card"><pre>${esc(p.body)}</pre></div><button class="btn alt" data-act="close">Close</button>`,
+            `<h1>${esc(p.title)}</h1><span class="tag">${esc(p.subject)}</span><span class="tag">Grade ${esc(p.grade)}</span>${p.file ? `<div class="card"><b>${esc(p.file.name)}</b><p class="note">${Math.max(1, Math.round(p.file.size / 1024))} KB</p>${p.file.type.startsWith("image/") ? `<img class="preview" alt="" src="${p.file.data}">` : ""}<button class="btn" data-act="open" data-id="${p.id}">Open file</button><a class="btn alt" style="text-decoration:none;text-align:center;padding-top:12px" href="${p.file.data}" download="${esc(p.file.name)}">Download</a></div>` : `<div class="card"><pre>${esc(p.body)}</pre></div>`}<button class="btn alt" data-act="close">Close</button>`,
           );
         else if (a === "del")
           modal(
